@@ -38,8 +38,8 @@ public class ContactImplTest {
 	public void testAddNotes() {
 		assertEquals("", testContact.getNotes());
 		testContact.addNotes("i like to play with cats");
-		assertEquals("i also like dogs", testContact.getNotes());
-		testContact.addNotes("C");
+		assertEquals("i like to play with cats", testContact.getNotes());
+		testContact.addNotes("i also like dogs");
 		assertEquals("i like to play with cats, i also like dogs", testContact.getNotes());
 	}
 
