@@ -8,6 +8,7 @@ public class ContactImpl implements Contact {
 	public ContactImpl(int ID, String name){
 		this.ID = ID;
 		this.name = name;
+		notes = "";
 	}
 	
 	@Override
