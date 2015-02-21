@@ -7,10 +7,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ContactImplTest {
+	public Contact testContact;
 
 	@Before
 	public void setup(){
-		
+		testContact = new ContactImpl(1234, "John Jones");
 	}
 	
 	@After
@@ -20,7 +21,7 @@ public class ContactImplTest {
 	
 	@Test
 	public void testGetId() {
-		fail("Not yet implemented");
+		assertEquals(testContact.getId(), 1234);
 	}
 
 	@Test
