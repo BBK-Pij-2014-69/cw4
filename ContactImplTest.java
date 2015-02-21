@@ -16,7 +16,7 @@ public class ContactImplTest {
 	
 	@After
 	public void takeDown(){
-		
+		testContact = null;
 	}
 	
 	@Test
