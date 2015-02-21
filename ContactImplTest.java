@@ -36,7 +36,11 @@ public class ContactImplTest {
 
 	@Test
 	public void testAddNotes() {
-		fail("Not yet implemented");
+		assertEquals("", testContact.getNotes());
+		testContact.addNotes("i like to play with cats");
+		assertEquals("i also like dogs", testContact.getNotes());
+		testContact.addNotes("C");
+		assertEquals("i like to play with cats, i also like dogs", testContact.getNotes());
 	}
 
 }
