@@ -21,12 +21,12 @@ public class ContactImplTest {
 	
 	@Test
 	public void testGetId() {
-		assertEquals(testContact.getId(), 1234);
+		assertEquals(1234, testContact.getId());
 	}
 
 	@Test
 	public void testGetName() {
-		fail("Not yet implemented");
+		assertEquals("John Jones", testContact.getName());
 	}
 
 	@Test
