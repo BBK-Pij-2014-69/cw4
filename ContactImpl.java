@@ -23,8 +23,7 @@ public class ContactImpl implements Contact {
 
 	@Override
 	public String getNotes() {
-		// TODO Auto-generated method stub
-		return null;
+		return notes;
 	}
 
 	@Override
