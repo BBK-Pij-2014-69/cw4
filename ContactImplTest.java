@@ -31,7 +31,7 @@ public class ContactImplTest {
 
 	@Test
 	public void testGetNotes() {
-		fail("Not yet implemented");
+		assertEquals("", testContact.getNotes());
 	}
 
 	@Test
