@@ -26,7 +26,7 @@ public class MeetingImplTest {
 
 	@Test
 	public void testGetId() {
-		assertEquals(1234, meeting.getDate());
+		assertEquals(1234, meeting.getId());
 	}
 
 	@Test
