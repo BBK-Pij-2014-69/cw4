@@ -22,8 +22,7 @@ public class MeetingImpl implements Meeting {
 
 	@Override
 	public Calendar getDate() {
-		// TODO Auto-generated method stub
-		return null;
+		return date;
 	}
 
 	@Override
