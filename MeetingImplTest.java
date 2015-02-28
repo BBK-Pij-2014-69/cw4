@@ -3,6 +3,7 @@ package cw4;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Set;
 
 import org.junit.After;
@@ -16,6 +17,7 @@ public class MeetingImplTest {
  
 	@Before
 	public void setUp() {
+		date = new GregorianCalendar(2016, 01, 23, 11, 00);
 		meeting = new MeetingImpl(1234, date, contacts);
 	}
 
@@ -31,7 +33,7 @@ public class MeetingImplTest {
 
 	@Test
 	public void testGetDate() {
-		fail("Not yet implemented");
+		assertEquals(new GregorianCalendar(2016, 01, 23, 11, 00), meeting.getDate());
 	}
 
 	@Test
