@@ -27,8 +27,7 @@ public class MeetingImpl implements Meeting {
 
 	@Override
 	public Set<Contact> getContacts() {
-		// TODO Auto-generated method stub
-		return null;
+		return contacts;
 	}
 
 }
