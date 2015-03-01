@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.junit.After;
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class PastMeetingImplTest {
 	PastMeeting pastMeeting;
-	Set<Contact> contacts = new HashSet<Contact>();
+	Set<Contact> contacts = new LinkedHashSet<Contact>();
 	Calendar date;
 
 	@Before
