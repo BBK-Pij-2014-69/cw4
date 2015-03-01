@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class PastMeetingImplTest {
-	Meeting pastMeeting;
+	PastMeeting pastMeeting;
 	Set<Contact> contacts = new HashSet<Contact>();
 	Calendar date;
 
@@ -33,7 +33,7 @@ public class PastMeetingImplTest {
 
 	@Test
 	public void testGetNotes() {
-		AssertEquals("", pastMeeting.getNotes());
+		assertEquals("", pastMeeting.getNotes());
 	}
 
 	@Test
