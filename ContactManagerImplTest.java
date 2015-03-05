@@ -2,23 +2,37 @@ package cw4;
 
 import static org.junit.Assert.*;
 
+import java.util.GregorianCalendar;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class ContactManagerImplTest {
+	ContactManager contactManager;
+	Set<Contact> contacts;
+	
+	
 
 	@Before
 	public void setUp() throws Exception {
+		contacts = new LinkedHashSet<Contact>();
+		contacts.add(new ContactImpl(1, "Clark Kent"));
+		contactManager = new ContactmangerImpl();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		
 	}
 
 	@Test
 	public void testAddFutureMeeting() {
-		fail("Not yet implemented");
+		assertEquals(1,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
+		assertEquals("Invalid time/date",contactManager.addFutureMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00)));
+		assertEquals("One or more contacts do not exist",contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
 	}
 
 	@Test
