@@ -88,7 +88,9 @@ public class ContactmangerImpl implements ContactManager {
 	public Set<Contact> getContacts(String name) {
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
-			
+			if (contact.getName() == name){
+				returnSet.add(contact);
+			}
 		}
 		return returnSet;
 	}
