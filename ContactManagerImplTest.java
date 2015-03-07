@@ -123,6 +123,13 @@ public class ContactManagerImplTest {
 		Contact expected = new ContactImpl(1,"Clark Kent");
 		assertTrue(contactManager.getContacts("Clark Kent").contains(expected));
 	}
+	
+	@Test
+	public void throwsExceptionWhenGetContactsParameterIsNull() {
+		thrown.expect(NullPointerException.class);
+		String name = null;
+		contactManager.getContacts(name);
+	}
 
 	@Ignore @Test
 	public void testFlush() {
