@@ -1,15 +1,23 @@
 package cw4;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class ContactmangerImpl implements ContactManager {
+	private int meetingId = 0;
+	private List<Meeting> meetingsList = new ArrayList<Meeting>();
+	private Set<Contact> contactSet = new HashSet<Contact>();
 
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (date.before(Calendar.getInstance())) throw new IllegalArgumentException("Invalid time/date");
+		if (!contactSet.containsAll(contacts)) throw new IllegalArgumentException("One or more contacts do not exist");
+		meetingId ++;
+		this.meetingsList.add(new FutureMeetingImpl(meetingId, date, contacts));
+		return meetingId;
 	}
 
 	@Override
