@@ -99,6 +99,18 @@ public class ContactManagerImplTest {
 		Contact expected = new ContactImpl(1,"Bruce Wayne");
 		assertTrue(contactManager.getContacts("Bruce Wayne").contains(expected));
 	}
+	
+	@Test
+	public void throwsExceptionWhenNameIsNull() {
+		thrown.expect(NullPointerException.class);
+		contactManager.addNewContact(null, "not null");
+	}
+	
+	@Test
+	public void throwsExceptionWhenNotesIsNull() {
+		thrown.expect(NullPointerException.class);
+		contactManager.addNewContact("not null", null);
+	}
 
 	@Ignore @Test
 	public void testGetContactsIntArray() {
