@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,11 +35,9 @@ public class ContactManagerImplTest {
 
 	@Ignore @Test
 	public void testAddFutureMeeting() {
-		
 		assertEquals(1,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
-		//assertEquals("One or more contacts do not exist",contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
-		
 	}
+	
 	@Test
 	public void throwsExceptionWhenAContactIsNonExistent() {
 		thrown.expect(IllegalArgumentException.class);
