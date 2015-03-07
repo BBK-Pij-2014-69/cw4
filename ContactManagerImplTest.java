@@ -3,7 +3,7 @@ package cw4;
 import static org.junit.Assert.*;
 
 import java.util.GregorianCalendar;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.After;
@@ -19,8 +19,8 @@ public class ContactManagerImplTest {
 
 	@Before
 	public void setUp() {
-		contacts = new LinkedHashSet<Contact>(); // Used LinkedHashSet as order is maintained and so easier to test.
-		contacts.add(new ContactImpl(1, "Diana Prince"));
+		contacts = new HashSet<Contact>(); 
+		contacts.add(new ContactImpl(1,"Diana Prince"));
 		contactManager = new ContactmangerImpl();
 	}
 
@@ -95,9 +95,9 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testAddNewContact() {
-		Contact contactToTest = new ContactImpl(1, "Bruce Wayne");
 		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
-		assertTrue(contactManager.getContacts("Bruce Wayne").contains(contactToTest));
+		Contact expected = new ContactImpl(1,"Bruce Wayne");
+		assertTrue(contactManager.getContacts("Bruce Wayne").contains(expected));
 	}
 
 	@Ignore @Test
@@ -107,9 +107,9 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testGetContactsString() {
-		Contact contactToTest = new ContactImpl(1, "Clark Kent");
 		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
-		assertTrue(contactManager.getContacts("Clark Kent").contains(contactToTest));
+		Contact expected = new ContactImpl(1,"Clark Kent");
+		assertTrue(contactManager.getContacts("Clark Kent").contains(expected));
 	}
 
 	@Ignore @Test
