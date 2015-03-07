@@ -87,6 +87,7 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(String name) {
+		if (name == null) throw new NullPointerException();
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
 			if (contact.getName() == name){
