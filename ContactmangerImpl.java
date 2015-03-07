@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class ContactmangerImpl implements ContactManager {
 	private int meetingId = 0;
+	private int contactId = 0;
 	private List<Meeting> meetingsList = new ArrayList<Meeting>();
 	private Set<Contact> contactSet = new HashSet<Contact>();
 
@@ -71,8 +72,10 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public void addNewContact(String name, String notes) {
-		// TODO Auto-generated method stub
-
+		contactId++;
+		Contact contactToAdd = new ContactImpl(contactId, name);
+		contactToAdd.addNotes(notes);
+		contactSet.add(contactToAdd);
 	}
 
 	@Override
@@ -83,8 +86,11 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Contact> returnSet = new HashSet<Contact>();
+		for (Contact contact: contactSet){
+			
+		}
+		return returnSet;
 	}
 
 	@Override
