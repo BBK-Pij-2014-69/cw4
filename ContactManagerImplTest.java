@@ -26,7 +26,7 @@ public class ContactManagerImplTest {
 
 	@After
 	public void tearDown() {
-	
+		contactManager = null;
 	}
 	
 	@Rule
@@ -58,9 +58,12 @@ public class ContactManagerImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Ignore @Test
+	@Test
 	public void testGetFutureMeeting() {
-		fail("Not yet implemented");
+		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
+		assertEquals(1,contactManager.getFutureMeeting(1).getId());
+		assertEquals(contacts, contactManager.getFutureMeeting(1).getContacts());
 	}
 
 	@Ignore @Test
