@@ -97,9 +97,19 @@ public class ContactManagerImplTest {
 		assertNull(contactManager.getMeeting(10));
 	}
 	
-	@Ignore @Test
+	@Test
 	public void testGetFutureMeetingListContact() {
-		fail("Not yet implemented");
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		assertEquals(1, contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).size());
+		assertEquals(0, contactManager.getFutureMeetingList(new ContactImpl(2, "Arthur Curry")).size());
+	}
+	
+	//getFutureMeetingList()
+	@Test 
+	public void throwsExceptionContactNotExists() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Contact does not exist");
+		contactManager.getFutureMeetingList(new ContactImpl(2, "Arthur Curry"));
 	}
 
 	@Ignore @Test
