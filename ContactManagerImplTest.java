@@ -26,6 +26,7 @@ public class ContactManagerImplTest {
 		contactManager = new ContactmangerImpl();
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "past meeting notes");
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
 	}
 	
 	@After
@@ -38,7 +39,7 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testAddFutureMeeting() {
-		assertEquals(2,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
+		assertEquals(3,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
 	}
 	
 	//addFutureMeeting()
@@ -69,13 +70,12 @@ public class ContactManagerImplTest {
 	public void throwsExceptionDateIsFuture() {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("This id is for a future meeting");
-		contactManager.getPastMeeting(1);
+		contactManager.getPastMeeting(2);
 	}
 	
 	@Test
 	public void testGetFutureMeeting() {
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
-		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
 		assertEquals(2,contactManager.getFutureMeeting(2).getId());
 		assertEquals(contacts, contactManager.getFutureMeeting(2).getContacts());
 		assertNull(contactManager.getFutureMeeting(10));
