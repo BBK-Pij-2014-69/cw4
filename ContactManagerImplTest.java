@@ -79,6 +79,7 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
 		assertEquals(1,contactManager.getMeeting(1).getId());
+		assertNull(contactManager.getMeeting(10));
 	}
 
 	@Ignore @Test
