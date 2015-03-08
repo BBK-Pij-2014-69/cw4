@@ -17,12 +17,17 @@ public class ContactManagerImplTest {
 	ContactManager contactManager;
 	Set<Contact> contacts;
 	Set<Contact> contactsEmpty;
+	Set<Contact> contactsNonExisting;
 
 	@Before
 	public void setUp() {
 		contacts = new HashSet<Contact>(); 
 		contacts.add(new ContactImpl(1,"Diana Prince"));
+		contactsEmpty = new HashSet<Contact>();
+		contactsNonExisting = new HashSet<Contact>();
+		contactsNonExisting.add(new ContactImpl(2, "Arthur Curry"));
 		contactManager = new ContactmangerImpl();
+		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 	}
 
 	@After
@@ -35,17 +40,18 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testAddFutureMeeting() {
-		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		assertEquals(1,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
 	}
 	
+	//addFutureMeeting()
 	@Test
 	public void throwsExceptionWhenAContactIsNonExistent() {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("One or more contacts do not exist");
-		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
+		contactManager.addFutureMeeting(contactsNonExisting, new GregorianCalendar(2016, 00, 23, 12, 00));
 	}
 	
+	//addFutureMeeting()
 	@Test
 	public void throwsExceptionWhenInvalidDateIsUsed() {
 		thrown.expect(IllegalArgumentException.class);
@@ -83,8 +89,6 @@ public class ContactManagerImplTest {
 		assertNull(contactManager.getMeeting(10));
 	}
 	
-	
-
 	@Ignore @Test
 	public void testGetFutureMeetingListContact() {
 		fail("Not yet implemented");
@@ -111,7 +115,7 @@ public class ContactManagerImplTest {
 	public void throwsExceptionNonExistantContact() {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("One or more contacts do not exist");
-		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
+		contactManager.addNewPastMeeting(contactsNonExisting, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
 	}
 	
 	//addNewPastMeeting()
@@ -151,16 +155,18 @@ public class ContactManagerImplTest {
 	@Test
 	public void testAddNewContact() {
 		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
-		Contact expected = new ContactImpl(1,"Bruce Wayne");
+		Contact expected = new ContactImpl(2,"Bruce Wayne");
 		assertTrue(contactManager.getContacts("Bruce Wayne").contains(expected));
 	}
 	
+	// addNewContac()
 	@Test
 	public void throwsExceptionWhenNameIsNull() {
 		thrown.expect(NullPointerException.class);
 		contactManager.addNewContact(null, "not null");
 	}
 	
+	// addNewContac()
 	@Test
 	public void throwsExceptionWhenNotesIsNull() {
 		thrown.expect(NullPointerException.class);
@@ -175,10 +181,11 @@ public class ContactManagerImplTest {
 	@Test
 	public void testGetContactsString() {
 		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
-		Contact expected = new ContactImpl(1,"Clark Kent");
+		Contact expected = new ContactImpl(2,"Clark Kent");
 		assertTrue(contactManager.getContacts("Clark Kent").contains(expected));
 	}
 	
+	// getContacts()
 	@Test
 	public void throwsExceptionWhenGetContactsParameterIsNull() {
 		thrown.expect(NullPointerException.class);
