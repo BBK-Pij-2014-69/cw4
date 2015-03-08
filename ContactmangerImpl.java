@@ -63,6 +63,9 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+		if (contacts.isEmpty()) throw new IllegalArgumentException("Contacts list is empty");
+		if (!contactSet.containsAll(contacts)) throw new IllegalArgumentException("One or more contacts do not exist");
+		if (contacts == null || date == null || text == null) throw new NullPointerException();
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
 		
