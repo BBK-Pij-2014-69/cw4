@@ -29,7 +29,9 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public FutureMeeting getFutureMeeting(int id) {
-		// TODO Auto-generated method stub
+		for (Meeting m : meetingsList){
+			if (m.getId() == id) return (FutureMeeting) m;
+		}
 		return null;
 	}
 
