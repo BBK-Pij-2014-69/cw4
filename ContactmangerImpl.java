@@ -27,7 +27,7 @@ public class ContactmangerImpl implements ContactManager {
 		return null;
 	}
 
-	@Override
+	@Override //TODO : need to add exception for a past meeting
 	public FutureMeeting getFutureMeeting(int id) {
 		for (Meeting m : meetingsList){
 			if (m.getId() == id) return (FutureMeeting) m;
