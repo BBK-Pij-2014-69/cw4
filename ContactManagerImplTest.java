@@ -76,7 +76,9 @@ public class ContactManagerImplTest {
 
 	@Ignore @Test
 	public void testGetMeeting() {
-		fail("Not yet implemented");
+		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
+		assertEquals(1,contactManager.getMeeting(1).getId());
 	}
 
 	@Ignore @Test
