@@ -25,7 +25,7 @@ public class ContactManagerImplTest {
 		contactsNonExisting.add(new ContactImpl(2, "Arthur Curry"));
 		contactManager = new ContactmangerImpl();
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
-		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "for exception testing");
+		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "past meeting notes");
 	}
 	
 	@After
@@ -58,11 +58,20 @@ public class ContactManagerImplTest {
 	}
 	
 
-	@Ignore @Test
+	@Test
 	public void testGetPastMeeting() {
-		fail("Not yet implemented");
+		assertEquals(1, contactManager.getPastMeeting(1).getId());
+		assertNull(contactManager.getPastMeeting(10));
 	}
 
+	//getPastMeeting()
+	@Test 
+	public void throwsExceptionDateIsFuture() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("This id is for a future meeting");
+		contactManager.getPastMeeting(1);
+	}
+	
 	@Test
 	public void testGetFutureMeeting() {
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
