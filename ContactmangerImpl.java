@@ -37,7 +37,9 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public Meeting getMeeting(int id) {
-		// TODO Auto-generated method stub
+		for (Meeting m : meetingsList){
+			if (m.getId() == id) return m;
+		}
 		return null;
 	}
 
