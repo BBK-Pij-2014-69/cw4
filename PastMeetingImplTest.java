@@ -23,7 +23,7 @@ public class PastMeetingImplTest {
 		contacts.add(contact0);
 		contacts.add(contact1);
 		date = new GregorianCalendar(2016, 01, 23, 11, 00);
-		pastMeeting = new PastMeetingImpl(1234, date, contacts);
+		pastMeeting = new PastMeetingImpl(1234, date, contacts, "Clark was picking his nose");
 	}
 
 	@After
@@ -33,7 +33,7 @@ public class PastMeetingImplTest {
 
 	@Test
 	public void testGetNotes() {
-		assertEquals("", pastMeeting.getNotes());
+		assertEquals("Clark was picking his nose", pastMeeting.getNotes());
 	}
 
 	@Test
