@@ -74,7 +74,7 @@ public class ContactManagerImplTest {
 		
 	}
 
-	@Ignore @Test
+	@Test
 	public void testGetMeeting() {
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
