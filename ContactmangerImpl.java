@@ -23,7 +23,10 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public PastMeeting getPastMeeting(int id) {
-		// TODO Auto-generated method stub
+		for (Meeting m : meetingsList){
+			if (m.getId() == id && m.getDate().after(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a future meeting");
+			if (m.getId() == id) return (PastMeeting) m;
+		}
 		return null;
 	}
 
