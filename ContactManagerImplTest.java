@@ -64,6 +64,7 @@ public class ContactManagerImplTest {
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
 		assertEquals(1,contactManager.getFutureMeeting(1).getId());
 		assertEquals(contacts, contactManager.getFutureMeeting(1).getContacts());
+		assertNull(contactManager.getFutureMeeting(10));
 	}
 
 	@Ignore @Test
