@@ -66,6 +66,13 @@ public class ContactManagerImplTest {
 		assertEquals(contacts, contactManager.getFutureMeeting(1).getContacts());
 		assertNull(contactManager.getFutureMeeting(10));
 	}
+	
+	@Ignore @Test // TODO : Needs a pastMeeting but not yet implemented
+	public void throwsExceptionDateIsPast() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("This id is for a past meeting");
+		
+	}
 
 	@Ignore @Test
 	public void testGetMeeting() {
