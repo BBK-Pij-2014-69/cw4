@@ -16,6 +16,7 @@ import org.junit.rules.ExpectedException;
 public class ContactManagerImplTest {
 	ContactManager contactManager;
 	Set<Contact> contacts;
+	Set<Contact> contactsEmpty;
 
 	@Before
 	public void setUp() {
@@ -104,7 +105,44 @@ public class ContactManagerImplTest {
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
 		assertEquals(1,contactManager.getMeeting(1).getId());
 	}
-
+	
+	//addNewPastMeeting()
+	@Test
+	public void throwsExceptionNonExistantContact() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("One or more contacts do not exist");
+		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
+	}
+	
+	//addNewPastMeeting()
+	@Test
+	public void throwsExceptionEmptyList() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Contacts list is empty");
+		contactManager.addNewPastMeeting(contactsEmpty, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
+	}
+	
+	//addNewPastMeeting()
+	@Test
+	public void throwsExceptionNullContacts() {
+		thrown.expect(NullPointerException.class);
+		contactManager.addNewPastMeeting(null, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
+	}
+	
+	//addNewPastMeeting()
+	@Test
+	public void throwsExceptionNullCalender() {
+		thrown.expect(NullPointerException.class);
+		contactManager.addNewPastMeeting(contacts, null, "No New Business");
+	}
+	
+	//addNewPastMeeting()
+	@Test
+	public void throwsExceptionNullNotes() {
+		thrown.expect(NullPointerException.class);
+		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), null);
+	}
+	
 	@Ignore @Test
 	public void testAddMeetingNotes() {
 		fail("Not yet implemented");
