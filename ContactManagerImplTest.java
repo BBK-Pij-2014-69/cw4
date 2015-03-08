@@ -15,21 +15,19 @@ import org.junit.rules.ExpectedException;
 
 public class ContactManagerImplTest {
 	ContactManager contactManager;
-	Set<Contact> contacts;
-	Set<Contact> contactsEmpty;
-	Set<Contact> contactsNonExisting;
+	Set<Contact> contacts = new HashSet<Contact>();
+	Set<Contact> contactsEmpty = new HashSet<Contact>();
+	Set<Contact> contactsNonExisting = new HashSet<Contact>();
 
 	@Before
 	public void setUp() {
-		contacts = new HashSet<Contact>(); 
 		contacts.add(new ContactImpl(1,"Diana Prince"));
-		contactsEmpty = new HashSet<Contact>();
-		contactsNonExisting = new HashSet<Contact>();
 		contactsNonExisting.add(new ContactImpl(2, "Arthur Curry"));
 		contactManager = new ContactmangerImpl();
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
+		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "for exception testing");
 	}
-
+	
 	@After
 	public void tearDown() {
 		contactManager = null;
@@ -40,7 +38,7 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testAddFutureMeeting() {
-		assertEquals(1,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
+		assertEquals(2,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
 	}
 	
 	//addFutureMeeting()
@@ -69,16 +67,17 @@ public class ContactManagerImplTest {
 	public void testGetFutureMeeting() {
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
-		assertEquals(1,contactManager.getFutureMeeting(1).getId());
-		assertEquals(contacts, contactManager.getFutureMeeting(1).getContacts());
+		assertEquals(2,contactManager.getFutureMeeting(2).getId());
+		assertEquals(contacts, contactManager.getFutureMeeting(2).getContacts());
 		assertNull(contactManager.getFutureMeeting(10));
 	}
 	
-	@Ignore @Test // TODO : Needs a pastMeeting but not yet implemented
+	//getFutureMeeting()
+	@Test 
 	public void throwsExceptionDateIsPast() {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("This id is for a past meeting");
-		
+		contactManager.getFutureMeeting(1);
 	}
 
 	@Test
