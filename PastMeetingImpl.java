@@ -9,11 +9,11 @@ public class PastMeetingImpl implements PastMeeting {
 	private Set<Contact> contacts;
 	private String notes;
 	
-	public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts) {
+	public PastMeetingImpl(int id, Calendar date, Set<Contact> contacts, String notes) {
 		this.id = id;
 		this.date = date;
 		this.contacts = contacts;
-		this.notes = "";
+		this.notes = notes;
 	}
 
 	@Override
