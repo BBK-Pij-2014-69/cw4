@@ -2,6 +2,7 @@ package cw4;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,8 +50,12 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!contactSet.contains(contact)) throw new IllegalArgumentException("Contact does not exist");
+		ArrayList<Meeting> returnList = new ArrayList<Meeting>();
+		for (Meeting m : meetingsList){
+			if (m.getContacts().contains(contact) && m instanceof FutureMeeting) returnList.add(m);
+		}
+		return chronologicalReArrange(returnList);
 	}
 
 	@Override
@@ -113,5 +118,17 @@ public class ContactmangerImpl implements ContactManager {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public List<Meeting> chronologicalReArrange(ArrayList<Meeting> list){
+		for (Meeting m : list){
+			for (Meeting p : list){
+				if (m.getDate().after(p.getDate())){
+					Collections.swap(list, list.indexOf(m), list.indexOf(p));
+				}
+			}
+		}
+		return list;
+	}
+	
 
 }
