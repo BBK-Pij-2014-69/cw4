@@ -81,6 +81,8 @@ public class ContactManagerImplTest {
 		assertEquals(1,contactManager.getMeeting(1).getId());
 		assertNull(contactManager.getMeeting(10));
 	}
+	
+	
 
 	@Ignore @Test
 	public void testGetFutureMeetingListContact() {
@@ -97,9 +99,10 @@ public class ContactManagerImplTest {
 		fail("Not yet implemented");
 	}
 
-	@Ignore @Test
+	@Test
 	public void testAddNewPastMeeting() {
-		fail("Not yet implemented");
+		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
+		assertEquals(1,contactManager.getMeeting(1).getId());
 	}
 
 	@Ignore @Test
