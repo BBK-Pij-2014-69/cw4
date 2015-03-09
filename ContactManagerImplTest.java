@@ -115,9 +115,10 @@ public class ContactManagerImplTest {
 		contactManager.getFutureMeetingList(new ContactImpl(2, "Arthur Curry"));
 	}
 
-	@Ignore @Test
+	@Test
 	public void testGetFutureMeetingListCalendar() {
-		fail("Not yet implemented");
+		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2014, 00, 23)).size());
+		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).size());
 	}
 
 	@Ignore @Test
@@ -155,7 +156,7 @@ public class ContactManagerImplTest {
 	}
 	
 	//addNewPastMeeting()
-	@Test
+	@Test 
 	public void throwsExceptionNullCalender() {
 		thrown.expect(NullPointerException.class);
 		contactManager.addNewPastMeeting(contacts, null, "No New Business");
