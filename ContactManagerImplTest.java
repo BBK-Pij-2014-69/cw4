@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.After;
@@ -231,5 +232,21 @@ public class ContactManagerImplTest {
 	public void testFlush() {
 		fail("Not yet implemented");
 	}
-
+	
+	@Test
+	public void testChronologicalReArrange(){
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 20, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 28, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 01, 23, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2015, 10, 23, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 04, 23, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2015, 03, 23, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 20, 00));
+		List<Meeting> checkList = contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince"));
+		String checkstring = "";
+		for (Meeting m : checkList){
+			checkstring = checkstring + m.getId() + " ";
+		}
+		assertEquals("8 6 3 2 9 4 5 7 ", checkstring);
+	}
 }
