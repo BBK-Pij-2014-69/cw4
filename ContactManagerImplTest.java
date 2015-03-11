@@ -139,6 +139,15 @@ public class ContactManagerImplTest {
 		assertTrue(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getDate().before(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(1).getDate()));
 	}
 
+	//getPastMeetingList
+	@Test
+	public void throwsExceptionContactNotExistsPastMeeting() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Contact does not exist");
+		contactManager.getPastMeetingList(new ContactImpl(2, "Arthur Curry"));
+	}
+
+	
 	@Test
 	public void testAddNewPastMeeting() {
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
