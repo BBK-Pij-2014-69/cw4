@@ -3,6 +3,7 @@ package cw4;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ public class ContactmangerImpl implements ContactManager {
 		if (!contactSet.containsAll(contacts)) throw new IllegalArgumentException("One or more contacts do not exist");
 		meetingId ++;
 		this.meetingsList.add(new FutureMeetingImpl(meetingId, date, contacts));
+		chronologicalReArrange(meetingsList);
 		return meetingId;
 	}
 
@@ -55,7 +57,7 @@ public class ContactmangerImpl implements ContactManager {
 		for (Meeting m : meetingsList){
 			if (m.getContacts().contains(contact) && m instanceof FutureMeeting) returnList.add(m);
 		}
-		return chronologicalReArrange(returnList);
+		return returnList;
 	}
 
 	@Override
@@ -64,13 +66,16 @@ public class ContactmangerImpl implements ContactManager {
 		for (Meeting m : meetingsList){
 			if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) returnList.add(m);
 		}
-		return chronologicalReArrange(returnList);
+		return returnList;
 	}
 
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<PastMeeting> returnList = new ArrayList<PastMeeting>();
+		for (Meeting m : meetingsList){
+			if (m.getContacts().contains(contact) && m instanceof PastMeeting) returnList.add((PastMeeting)m);
+		}
+		return returnList;
 	}
 
 	@Override
@@ -80,7 +85,7 @@ public class ContactmangerImpl implements ContactManager {
 		if (contacts == null || date == null || text == null) throw new NullPointerException();
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
-		
+		chronologicalReArrange(meetingsList);
 	}
 
 	@Override
@@ -122,15 +127,12 @@ public class ContactmangerImpl implements ContactManager {
 
 	}
 	
-	public List<Meeting> chronologicalReArrange(List<Meeting> list){
-		for (Meeting m : list){
-			for (Meeting p : list){
-				if (m.getDate().after(p.getDate())){
-					Collections.swap(list, list.indexOf(m), list.indexOf(p));
-				}
-			}
-		}
-		return list;
+	public void chronologicalReArrange(List<Meeting> list){
+		Collections.sort(meetingsList, new Comparator<Meeting>() {
+			public int compare(Meeting o1, Meeting o2) {
+				return o1.getDate().compareTo(o2.getDate());
+			}            
+		}); 
 	}
 	
 
