@@ -91,8 +91,17 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
-		// TODO Auto-generated method stub
-
+		PastMeetingImpl tempMeeting = null;
+		int indexToRemove = 0;
+		for(Meeting m : meetingsList){
+			if (m.getId() == id){
+				tempMeeting = new PastMeetingImpl(id, m.getDate(), m.getContacts(), text);
+				indexToRemove = meetingsList.indexOf(m);
+			}
+		}
+		meetingsList.remove(indexToRemove);
+		meetingsList.add(tempMeeting);
+		chronologicalReArrange(meetingsList);
 	}
 
 	@Override
@@ -128,7 +137,7 @@ public class ContactmangerImpl implements ContactManager {
 
 	}
 	
-	public void chronologicalReArrange(List<Meeting> list){
+	private void chronologicalReArrange(List<Meeting> list){
 		Collections.sort(meetingsList, new Comparator<Meeting>() {
 			public int compare(Meeting o1, Meeting o2) {
 				return o1.getDate().compareTo(o2.getDate());
