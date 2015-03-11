@@ -60,8 +60,11 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public List<Meeting> getFutureMeetingList(Calendar date) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Meeting> returnList = new ArrayList<Meeting>();
+		for (Meeting m : meetingsList){
+			if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) returnList.add(m);
+		}
+		return returnList;
 	}
 
 	@Override
