@@ -191,9 +191,10 @@ public class ContactManagerImplTest {
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), null);
 	}
 	
-	@Ignore @Test
+	@Test
 	public void testAddMeetingNotes() {
-		fail("Not yet implemented");
+		contactManager.addMeetingNotes(1, "new meeting Notes");
+		assertEquals("new meeting Notes", contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getNotes());
 	}
 
 	@Test
