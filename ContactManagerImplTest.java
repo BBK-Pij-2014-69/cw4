@@ -2,6 +2,7 @@ package cw4;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -118,7 +119,9 @@ public class ContactManagerImplTest {
 	@Test
 	public void testGetFutureMeetingListCalendar() {
 		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2014, 00, 23)).size());
+		assertEquals(2014, contactManager.getFutureMeetingList(new GregorianCalendar(2014, 00, 23)).get(0).getDate().get(Calendar.YEAR));
 		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).size());
+		assertEquals(2016, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).get(0).getDate().get(Calendar.YEAR));
 	}
 
 	@Ignore @Test
