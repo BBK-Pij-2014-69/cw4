@@ -64,7 +64,7 @@ public class ContactmangerImpl implements ContactManager {
 		for (Meeting m : meetingsList){
 			if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) returnList.add(m);
 		}
-		return returnList;
+		return chronologicalReArrange(returnList);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class ContactmangerImpl implements ContactManager {
 
 	}
 	
-	public List<Meeting> chronologicalReArrange(ArrayList<Meeting> list){
+	public List<Meeting> chronologicalReArrange(List<Meeting> list){
 		for (Meeting m : list){
 			for (Meeting p : list){
 				if (m.getDate().after(p.getDate())){
