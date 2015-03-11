@@ -102,6 +102,7 @@ public class ContactManagerImplTest {
 	public void testGetFutureMeetingListContact() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
 		assertEquals(1, contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).size());
+		assertTrue(contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).get(0) instanceof FutureMeetingImpl);
 		assertEquals(0, contactManager.getFutureMeetingList(new ContactImpl(2, "Arthur Curry")).size());
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 10, 00));
 		//checks that first element time is before second element time.
@@ -128,8 +129,11 @@ public class ContactManagerImplTest {
 	public void testGetPastMeetingList() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
 		assertEquals(1, contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).size());
+		assertTrue(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0) instanceof PastMeetingImpl);
 		assertEquals(0, contactManager.getPastMeetingList(new ContactImpl(2, "Arthur Curry")).size());
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 10, 00), "test");
+		assertEquals(2, contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).size());
+		assertEquals("test",contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getNotes());
 		//checks that first element time is before second element time.
 		assertTrue(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getDate().before(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(1).getDate()));
 	}
