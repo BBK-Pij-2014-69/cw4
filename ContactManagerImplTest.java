@@ -124,9 +124,14 @@ public class ContactManagerImplTest {
 		assertEquals(2016, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).get(0).getDate().get(Calendar.YEAR));
 	}
 
-	@Ignore @Test
+	@Test
 	public void testGetPastMeetingList() {
-		fail("Not yet implemented");
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		assertEquals(1, contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).size());
+		assertEquals(0, contactManager.getPastMeetingList(new ContactImpl(2, "Arthur Curry")).size());
+		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 10, 00), "test");
+		//checks that first element time is before second element time.
+		assertTrue(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getDate().before(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(1).getDate()));
 	}
 
 	@Test
