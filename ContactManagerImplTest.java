@@ -196,6 +196,30 @@ public class ContactManagerImplTest {
 		contactManager.addMeetingNotes(1, "new meeting Notes");
 		assertEquals("new meeting Notes", contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getNotes());
 	}
+	
+	//addMeetingNotes()
+	@Test
+	public void throwsExceptionMeetingNonExistent() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Meeting does not exist");
+		contactManager.addMeetingNotes(5, "non existing meeting");
+	}
+	
+	//addMeetingNotes()
+	@ Ignore @Test
+	public void throwsExceptionFutureDate() {
+		thrown.expect(IllegalStateException.class);
+		thrown.expectMessage("Meeting does not exist");
+		contactManager.addMeetingNotes(1, "non existing meeting");
+	}
+	
+	//addMeetingNotes()
+	@Test
+	public void throwsExceptionNotesNull() {
+		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Notes is Null");
+		contactManager.addMeetingNotes(1, null);
+	}
 
 	@Test
 	public void testAddNewContact() {
