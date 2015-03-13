@@ -210,7 +210,7 @@ public class ContactManagerImplTest {
 	public void throwsExceptionFutureDate() {
 		thrown.expect(IllegalStateException.class);
 		thrown.expectMessage("Meeting does not exist");
-		contactManager.addMeetingNotes(1, "non existing meeting");
+		contactManager.addMeetingNotes(1, "date in future");
 	}
 	
 	//addMeetingNotes()
