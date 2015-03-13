@@ -254,6 +254,14 @@ public class ContactManagerImplTest {
 		assertTrue(testSet.contains(new ContactImpl(4, "Bruce Wayne")));
 		assertTrue(testSet.contains(new ContactImpl(5, "Billy Batson")));
 	}
+	
+	//getContacts(int... ids)
+	@Test 
+	public void throwsExceptionInvalidId() {
+		thrown.expect(IllegalArgumentException.class);
+		thrown.expectMessage("Id is invalid");
+		contactManager.getContacts(25);
+	}
 
 	@Test
 	public void testGetContactsString() {
