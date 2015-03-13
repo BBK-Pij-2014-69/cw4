@@ -206,11 +206,11 @@ public class ContactManagerImplTest {
 	}
 	
 	//addMeetingNotes()
-	@ Ignore @Test
+	@Test
 	public void throwsExceptionFutureDate() {
 		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("Meeting does not exist");
-		contactManager.addMeetingNotes(1, "date in future");
+		thrown.expectMessage("Future Date Found");
+		contactManager.addMeetingNotes(2, "date in future");
 	}
 	
 	//addMeetingNotes()
@@ -283,4 +283,5 @@ public class ContactManagerImplTest {
 		}
 		assertEquals("8 6 3 2 9 4 5 7 ", checkstring);
 	}
+	
 }
