@@ -116,10 +116,16 @@ public class ContactmangerImpl implements ContactManager {
 		contactSet.add(contactToAdd);
 	}
 
+	
 	@Override
 	public Set<Contact> getContacts(int... ids) {
-		// TODO Auto-generated method stub
-		return null;
+		Set <Contact> returnSet = new HashSet<Contact>();
+		for (Contact c : contactSet){
+			for (int i : ids){
+				if (c.getId() == i) returnSet.add(c);
+			}
+		}
+		return returnSet;
 	}
 
 	@Override
@@ -134,6 +140,7 @@ public class ContactmangerImpl implements ContactManager {
 		return returnSet;
 	}
 
+	
 	@Override
 	public void flush() {
 		// TODO Auto-generated method stub
