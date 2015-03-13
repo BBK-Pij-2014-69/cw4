@@ -242,9 +242,17 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact("not null", null);
 	}
 
-	@Ignore @Test
+	@Test
 	public void testGetContactsIntArray() {
-		fail("Not yet implemented");
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
+		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
+		contactManager.addNewContact("Billy Batson", "I AM SHAZAM");
+		Set<Contact> testSet = contactManager.getContacts(2,3,4,5);
+		assertTrue(testSet.contains(new ContactImpl(2, "Arthur Curry")));
+		assertTrue(testSet.contains(new ContactImpl(3, "Clark Kent")));
+		assertTrue(testSet.contains(new ContactImpl(4, "Bruce Wayne")));
+		assertTrue(testSet.contains(new ContactImpl(5, "Billy Batson")));
 	}
 
 	@Test
