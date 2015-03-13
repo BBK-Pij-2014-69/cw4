@@ -91,6 +91,7 @@ public class ContactmangerImpl implements ContactManager {
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
+		if (text == null) throw new NullPointerException("Notes is Null");
 		PastMeetingImpl tempMeeting = null;
 		int indexToRemove = 0;
 		for(Meeting m : meetingsList){
@@ -99,6 +100,8 @@ public class ContactmangerImpl implements ContactManager {
 				indexToRemove = meetingsList.indexOf(m);
 			}
 		}
+		if (tempMeeting == null) throw new IllegalArgumentException("Meeting does not exist");
+		if (tempMeeting.getDate().after(Calendar.getInstance())) throw new IllegalStateException("Future Date Found");
 		meetingsList.remove(indexToRemove);
 		meetingsList.add(tempMeeting);
 		chronologicalReArrange(meetingsList);
