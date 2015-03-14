@@ -1,5 +1,6 @@
 package cw4;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -8,11 +9,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ContactmangerImpl implements ContactManager {
+public class ContactManagerImpl implements ContactManager {
 	private int meetingId = 0;
 	private int contactId = 0;
 	private List<Meeting> meetingsList = new ArrayList<Meeting>();
 	private Set<Contact> contactSet = new HashSet<Contact>();
+	
+	public ContactManagerImpl(){
+		File file = new File("contactManager.txt");
+		if (file.exists()){
+			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
+				meetingsList = (ArrayList)in.readObject();
+				contactSet = (HashSet)in.readObject();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -148,8 +165,23 @@ public class ContactmangerImpl implements ContactManager {
 	
 	@Override
 	public void flush() {
-		// TODO Auto-generated method stub
-
+		File file = new File("contactManager.txt");
+		if (file.exists()){
+			try{
+				file.delete();
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
+	         out.writeObject(meetingsList);
+	         out.writeObject(contactSet);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void chronologicalReArrange(List<Meeting> list){
