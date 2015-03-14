@@ -19,8 +19,11 @@ public class ContactManagerImpl implements ContactManager {
 		File file = new File("contactManager.txt");
 		if (file.exists()){
 			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
-				meetingsList = (ArrayList)in.readObject();
-				contactSet = (HashSet)in.readObject();
+				meetingsList = (ArrayList) in.readObject();
+				contactSet = (HashSet) in.readObject();
+				meetingId = (int) in.readObject();
+				contactId = (int) in.readObject();
+				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -177,6 +180,8 @@ public class ContactManagerImpl implements ContactManager {
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
 	         out.writeObject(meetingsList);
 	         out.writeObject(contactSet);
+	         out.writeObject(meetingId);
+	         out.writeObject(contactId);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
