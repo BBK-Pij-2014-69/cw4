@@ -283,11 +283,11 @@ public class ContactManagerImplTest {
 		contactManager.flush();
 		File file = new File("contactManager.txt");
 		assertTrue(file.exists());
-//		try{
-//			file.delete();
-//		}catch (Exception e){
-//			e.printStackTrace();
-//		}
+		try{
+			file.delete();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
