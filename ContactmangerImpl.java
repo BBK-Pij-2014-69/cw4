@@ -119,12 +119,17 @@ public class ContactmangerImpl implements ContactManager {
 	
 	@Override
 	public Set<Contact> getContacts(int... ids) {
+		int noOfIds = ids.length;
 		Set <Contact> returnSet = new HashSet<Contact>();
 		for (Contact c : contactSet){
 			for (int i : ids){
-				if (c.getId() == i) returnSet.add(c);
+				if (c.getId() == i){
+					returnSet.add(c);
+					noOfIds--;
+				}
 			}
 		}
+		if (noOfIds != 0) throw new IllegalArgumentException("Id is invalid");
 		return returnSet;
 	}
 
