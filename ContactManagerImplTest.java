@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -26,7 +25,7 @@ public class ContactManagerImplTest {
 	public void setUp() {
 		contacts.add(new ContactImpl(1,"Diana Prince"));
 		contactsNonExisting.add(new ContactImpl(2, "Arthur Curry"));
-		contactManager = new ContactmangerImpl();
+		contactManager = new ContactManagerImpl();
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "past meeting notes");
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
@@ -284,6 +283,11 @@ public class ContactManagerImplTest {
 		contactManager.flush();
 		File file = new File("contactManager.txt");
 		assertTrue(file.exists());
+//		try{
+//			file.delete();
+//		}catch (Exception e){
+//			e.printStackTrace();
+//		}
 	}
 	
 	@Test
