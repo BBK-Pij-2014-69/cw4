@@ -2,6 +2,7 @@ package cw4;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -278,9 +279,11 @@ public class ContactManagerImplTest {
 		contactManager.getContacts(name);
 	}
 
-	@Ignore @Test
+	@Test
 	public void testFlush() {
-		fail("Not yet implemented");
+		contactManager.flush();
+		File file = new File("contactManager.txt");
+		assertTrue(file.exists());
 	}
 	
 	@Test
