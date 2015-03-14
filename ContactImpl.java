@@ -1,6 +1,10 @@
 package cw4;
 
-public class ContactImpl implements Contact {
+import java.io.Serializable;
+
+public class ContactImpl implements Contact, Serializable {
+
+	private static final long serialVersionUID = -9114818729002509790L;
 	private int ID;
 	private String name;
 	private String notes;

@@ -1,10 +1,12 @@
 package cw4;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 
-public class MeetingImpl implements Meeting {
+public class MeetingImpl implements Meeting, Serializable {
 
+	private static final long serialVersionUID = -5543468645348781558L;
 	private int id;
 	private Calendar date;
 	private Set<Contact> contacts;
