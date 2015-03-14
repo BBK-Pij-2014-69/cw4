@@ -96,12 +96,12 @@ public class ContactmangerImpl implements ContactManager {
 		int indexToRemove = 0;
 		for(Meeting m : meetingsList){
 			if (m.getId() == id){
+				if (m.getDate().after(Calendar.getInstance())) throw new IllegalStateException("Future Date Found");
 				tempMeeting = new PastMeetingImpl(id, m.getDate(), m.getContacts(), text);
 				indexToRemove = meetingsList.indexOf(m);
 			}
 		}
 		if (tempMeeting == null) throw new IllegalArgumentException("Meeting does not exist");
-		if (tempMeeting.getDate().after(Calendar.getInstance())) throw new IllegalStateException("Future Date Found");
 		meetingsList.remove(indexToRemove);
 		meetingsList.add(tempMeeting);
 		chronologicalReArrange(meetingsList);
