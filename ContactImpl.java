@@ -3,7 +3,7 @@ package cw4;
 import java.io.Serializable;
 
 public class ContactImpl implements Contact, Serializable {
-
+	
 	private static final long serialVersionUID = -9114818729002509790L;
 	private int ID;
 	private String name;
@@ -32,11 +32,7 @@ public class ContactImpl implements Contact, Serializable {
 
 	@Override
 	public void addNotes(String note) {
-		if (getNotes() == ""){
-			notes = note;
-		}else{
-			notes = notes + ", " + note;
-		}
+		notes = note;
 	}
 
 	@Override
@@ -44,7 +40,7 @@ public class ContactImpl implements Contact, Serializable {
 		if (o == this) return false;
 		if (!(o instanceof ContactImpl)) return false;
 		ContactImpl c = (ContactImpl)o;
-		if (this.getId() == c.getId()){
+		if (this.getId() == c.getId() && this.getName().equals(c.getName()) && this.getNotes().equals(c.getNotes())){
 			return true;
 		}else{
 			return false;
@@ -55,6 +51,8 @@ public class ContactImpl implements Contact, Serializable {
     public int hashCode() {
 		int hash = 5;
 		hash = 83 * hash + ID;
+		hash = 83 * hash + name.hashCode();
+		hash = 83 * hash + notes.hashCode();
 		return hash;
 	}
 }

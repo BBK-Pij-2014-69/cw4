@@ -20,11 +20,21 @@ public class ContactManagerImplTest {
 	Set<Contact> contacts = new HashSet<Contact>();
 	Set<Contact> contactsEmpty = new HashSet<Contact>();
 	Set<Contact> contactsNonExisting = new HashSet<Contact>();
+	Contact DianaPrince = new ContactImpl(1,"Diana Prince");
+	Contact ArthurCurry = new ContactImpl(2, "Arthur Curry");
+	Contact ClarkKent = new ContactImpl(3, "Clark Kent");
+	Contact BruceWayne = new ContactImpl(4, "Bruce Wayne");
+	Contact BillyBatson = new ContactImpl(5, "Billy Batson");
 
 	@Before
 	public void setUp() {
-		contacts.add(new ContactImpl(1,"Diana Prince"));
-		contactsNonExisting.add(new ContactImpl(2, "Arthur Curry"));
+		DianaPrince.addNotes("I AM WONDER WOMAN");
+		ArthurCurry.addNotes("I AM AQUAMAN");
+		ClarkKent.addNotes("I AM SUPERMAN");
+		BruceWayne.addNotes("I AM BATMAN");
+		BillyBatson.addNotes("I AM SHAZAM");
+		contacts.add(DianaPrince);
+		contactsNonExisting.add(ArthurCurry);
 		contactManager = new ContactManagerImpl();
 		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "past meeting notes");
@@ -44,7 +54,7 @@ public class ContactManagerImplTest {
 		contactManager.flush();
 		contactManager = new ContactManagerImpl();
 		Set<Contact> myset = contactManager.getContacts(1);
-		for (Contact c : myset){ assertEquals("Diana Prince", c.getName());}
+		for (Contact c : myset){ assertEquals(1, c.getId());}
 		//assertEquals(1,contactManager.getContacts("Diana Prince").size()); //for sum reason not working
 		assertTrue(contactManager.getContacts(1).containsAll(contacts));
 		File file = new File("contactManager.txt");
@@ -118,12 +128,12 @@ public class ContactManagerImplTest {
 	@Test
 	public void testGetFutureMeetingListContact() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
-		assertEquals(1, contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).size());
-		assertTrue(contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).get(0) instanceof FutureMeetingImpl);
-		assertEquals(0, contactManager.getFutureMeetingList(new ContactImpl(2, "Arthur Curry")).size());
+		assertEquals(1, contactManager.getFutureMeetingList(DianaPrince).size());
+		assertTrue(contactManager.getFutureMeetingList(DianaPrince).get(0) instanceof FutureMeetingImpl);
+		assertEquals(0, contactManager.getFutureMeetingList(ArthurCurry).size());
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 10, 00));
 		//checks that first element time is before second element time.
-		assertTrue(contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getDate().before(contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince")).get(1).getDate()));
+		assertTrue(contactManager.getFutureMeetingList(DianaPrince).get(0).getDate().before(contactManager.getFutureMeetingList(DianaPrince).get(1).getDate()));
 	}
 	
 	//getFutureMeetingList()
@@ -131,7 +141,7 @@ public class ContactManagerImplTest {
 	public void throwsExceptionContactNotExists() {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Contact does not exist");
-		contactManager.getFutureMeetingList(new ContactImpl(2, "Arthur Curry"));
+		contactManager.getFutureMeetingList(ArthurCurry);
 	}
 
 	@Test
@@ -145,14 +155,14 @@ public class ContactManagerImplTest {
 	@Test
 	public void testGetPastMeetingList() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
-		assertEquals(1, contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).size());
-		assertTrue(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0) instanceof PastMeetingImpl);
-		assertEquals(0, contactManager.getPastMeetingList(new ContactImpl(2, "Arthur Curry")).size());
+		assertEquals(1, contactManager.getPastMeetingList(DianaPrince).size());
+		assertTrue(contactManager.getPastMeetingList(DianaPrince).get(0) instanceof PastMeetingImpl);
+		assertEquals(0, contactManager.getPastMeetingList(ArthurCurry).size());
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 10, 00), "test");
-		assertEquals(2, contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).size());
-		assertEquals("test",contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getNotes());
+		assertEquals(2, contactManager.getPastMeetingList(DianaPrince).size());
+		assertEquals("test",contactManager.getPastMeetingList(DianaPrince).get(0).getNotes());
 		//checks that first element time is before second element time.
-		assertTrue(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getDate().before(contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(1).getDate()));
+		assertTrue(contactManager.getPastMeetingList(DianaPrince).get(0).getDate().before(contactManager.getPastMeetingList(DianaPrince).get(1).getDate()));
 	}
 
 	//getPastMeetingList
@@ -160,7 +170,7 @@ public class ContactManagerImplTest {
 	public void throwsExceptionContactNotExistsPastMeeting() {
 		thrown.expect(IllegalArgumentException.class);
 		thrown.expectMessage("Contact does not exist");
-		contactManager.getPastMeetingList(new ContactImpl(2, "Arthur Curry"));
+		contactManager.getPastMeetingList(ArthurCurry);
 	}
 
 	
@@ -210,7 +220,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void testAddMeetingNotes() {
 		contactManager.addMeetingNotes(1, "new meeting Notes");
-		assertEquals("new meeting Notes", contactManager.getPastMeetingList(new ContactImpl(1, "Diana Prince")).get(0).getNotes());
+		assertEquals("new meeting Notes", contactManager.getPastMeetingList(DianaPrince).get(0).getNotes());
 	}
 	
 	//addMeetingNotes()
@@ -239,9 +249,8 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testAddNewContact() {
-		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
-		Contact expected = new ContactImpl(2,"Bruce Wayne");
-		assertTrue(contactManager.getContacts("Bruce Wayne").contains(expected));
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		assertTrue(contactManager.getContacts("Arthur Curry").contains(ArthurCurry));
 	}
 	
 	// addNewContac()
@@ -265,10 +274,10 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
 		contactManager.addNewContact("Billy Batson", "I AM SHAZAM");
 		Set<Contact> testSet = contactManager.getContacts(2,3,4,5);
-		assertTrue(testSet.contains(new ContactImpl(2, "Arthur Curry")));
-		assertTrue(testSet.contains(new ContactImpl(3, "Clark Kent")));
-		assertTrue(testSet.contains(new ContactImpl(4, "Bruce Wayne")));
-		assertTrue(testSet.contains(new ContactImpl(5, "Billy Batson")));
+		assertTrue(testSet.contains(ArthurCurry));
+		assertTrue(testSet.contains(ClarkKent));
+		assertTrue(testSet.contains(BruceWayne));
+		assertTrue(testSet.contains(BillyBatson));
 	}
 	
 	//getContacts(int... ids)
@@ -281,10 +290,9 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testGetContactsString() {
-		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
-		Contact expected = new ContactImpl(2,"Clark Kent");
-		assertTrue(contactManager.getContacts("Clark Kent").contains(expected));
-		assertEquals(1, contactManager.getContacts("Clark Kent").size());
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		assertTrue(contactManager.getContacts("Arthur Curry").contains(ArthurCurry));
+		assertEquals(1, contactManager.getContacts("Arthur Curry").size());
 	}
 	
 	// getContacts()
@@ -316,7 +324,7 @@ public class ContactManagerImplTest {
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 04, 23, 10, 00));
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2015, 03, 23, 10, 00));
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 20, 00));
-		List<Meeting> checkList = contactManager.getFutureMeetingList(new ContactImpl(1, "Diana Prince"));
+		List<Meeting> checkList = contactManager.getFutureMeetingList(DianaPrince);
 		String checkstring = "";
 		for (Meeting m : checkList){
 			checkstring = checkstring + m.getId() + " ";
