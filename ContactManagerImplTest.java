@@ -55,7 +55,7 @@ public class ContactManagerImplTest {
 		contactManager = new ContactManagerImpl();
 		Set<Contact> myset = contactManager.getContacts(1);
 		for (Contact c : myset){ assertEquals(1, c.getId());}
-		//assertEquals(1,contactManager.getContacts("Diana Prince").size()); //for sum reason not working
+		assertEquals(1,contactManager.getContacts("Diana Prince").size());
 		assertTrue(contactManager.getContacts(1).containsAll(contacts));
 		File file = new File("contactManager.txt");
 		try{

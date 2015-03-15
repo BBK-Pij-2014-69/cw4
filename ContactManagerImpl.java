@@ -158,7 +158,7 @@ public class ContactManagerImpl implements ContactManager {
 		if (name == null) throw new NullPointerException();
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
-			if (contact.getName() == name){
+			if (contact.getName().equals(name)){
 				returnSet.add(contact);
 			}
 		}
