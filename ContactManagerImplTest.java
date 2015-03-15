@@ -38,7 +38,23 @@ public class ContactManagerImplTest {
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
-
+	
+	@Test
+	public void testConstructor(){
+		contactManager.flush();
+		contactManager = new ContactManagerImpl();
+		Set<Contact> myset = contactManager.getContacts(1);
+		for (Contact c : myset){ assertEquals("Diana Prince", c.getName());}
+		//assertEquals(1,contactManager.getContacts("Diana Prince").size()); //for sum reason not working
+		assertTrue(contactManager.getContacts(1).containsAll(contacts));
+		File file = new File("contactManager.txt");
+		try{
+			file.delete();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	public void testAddFutureMeeting() {
 		assertEquals(3,contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00)));
@@ -268,6 +284,7 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
 		Contact expected = new ContactImpl(2,"Clark Kent");
 		assertTrue(contactManager.getContacts("Clark Kent").contains(expected));
+		assertEquals(1, contactManager.getContacts("Clark Kent").size());
 	}
 	
 	// getContacts()
