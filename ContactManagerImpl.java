@@ -22,8 +22,7 @@ public class ContactManagerImpl implements ContactManager {
 				meetingsList = (ArrayList) in.readObject();
 				contactSet = (HashSet) in.readObject();
 				meetingId = (int) in.readObject();
-				contactId = (int) in.readObject();
-				
+				contactId = (int) in.readObject();	
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -102,7 +101,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		checkContacts(contacts);
-		if (date == null) throw new NullPointerException();
+		if (date == null) throw new NullPointerException("Null item found");
 		checkNull(text);
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
@@ -149,7 +148,7 @@ public class ContactManagerImpl implements ContactManager {
 				}
 			}
 		}
-		if (noOfIds != 0) throw new IllegalArgumentException("Id is invalid");
+		if (noOfIds != 0) throw new IllegalArgumentException("One or more id's are invalid");
 		return returnSet;
 	}
 
@@ -203,8 +202,8 @@ public class ContactManagerImpl implements ContactManager {
 	}
 	
 	private void checkContacts(Set<Contact> checkSet){
-		if (!contactSet.containsAll(checkSet)) throw new IllegalArgumentException("One or more contacts do not exist");
 		if (checkSet == null) throw new NullPointerException("Contacts is null");
+		if (!contactSet.containsAll(checkSet)) throw new IllegalArgumentException("One or more contacts do not exist");
 		if (checkSet.isEmpty()) throw new IllegalArgumentException("Contacts list is empty");
 	}
 

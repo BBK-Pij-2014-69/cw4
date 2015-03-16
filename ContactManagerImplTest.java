@@ -200,6 +200,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionNullContacts() {
 		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Contacts is null");
 		contactManager.addNewPastMeeting(null, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
 	}
 	
@@ -207,6 +208,7 @@ public class ContactManagerImplTest {
 	@Test 
 	public void throwsExceptionNullCalender() {
 		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Null item found");
 		contactManager.addNewPastMeeting(contacts, null, "No New Business");
 	}
 	
@@ -214,6 +216,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionNullNotes() {
 		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Null item found");
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), null);
 	}
 	
@@ -257,6 +260,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionWhenNameIsNull() {
 		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Null item found");
 		contactManager.addNewContact(null, "not null");
 	}
 	
@@ -264,6 +268,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionWhenNotesIsNull() {
 		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Null item found");
 		contactManager.addNewContact("not null", null);
 	}
 
@@ -284,7 +289,7 @@ public class ContactManagerImplTest {
 	@Test 
 	public void throwsExceptionInvalidId() {
 		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Id is invalid");
+		thrown.expectMessage("One or more id's are invalid");
 		contactManager.getContacts(25);
 	}
 
@@ -299,6 +304,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionWhenGetContactsParameterIsNull() {
 		thrown.expect(NullPointerException.class);
+		thrown.expectMessage("Null item found");
 		String name = null;
 		contactManager.getContacts(name);
 	}
