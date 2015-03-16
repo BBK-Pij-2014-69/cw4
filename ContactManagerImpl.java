@@ -37,7 +37,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		if (date.before(Calendar.getInstance())) throw new IllegalArgumentException("Invalid time/date");
-		if (!contactSet.containsAll(contacts) || contacts.isEmpty()) throw new IllegalArgumentException("One or more contacts do not exist");
+		checkContacts(contacts);
 		meetingId ++;
 		this.meetingsList.add(new FutureMeetingImpl(meetingId, date, contacts));
 		chronologicalReArrange(meetingsList);
@@ -101,9 +101,9 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
-		if (contacts.isEmpty()) throw new IllegalArgumentException("Contacts list is empty");
-		if (!contactSet.containsAll(contacts)) throw new IllegalArgumentException("One or more contacts do not exist");
-		if (contacts == null || date == null || text == null) throw new NullPointerException();
+		checkContacts(contacts);
+		if (contacts == null || date == null) throw new NullPointerException();
+		checkNull(text);
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
 		chronologicalReArrange(meetingsList);
@@ -111,7 +111,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
-		if (text == null) throw new NullPointerException("Notes is Null");
+		checkNull(text);
 		PastMeetingImpl tempMeeting = null;
 		int indexToRemove = 0;
 		for(Meeting m : meetingsList){
@@ -129,7 +129,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewContact(String name, String notes) {
-		if (name == null || notes == null) throw new NullPointerException();
+		checkNull(name, notes);
 		contactId++;
 		Contact contactToAdd = new ContactImpl(contactId, name);
 		contactToAdd.addNotes(notes);
@@ -155,7 +155,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(String name) {
-		if (name == null) throw new NullPointerException();
+		checkNull(name);
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
 			if (contact.getName().contains(name)){
@@ -197,5 +197,16 @@ public class ContactManagerImpl implements ContactManager {
 		}); 
 	}
 	
+	private void checkNull(String... nullString){
+		for (String s : nullString){
+			if (s == null) throw new NullPointerException("Null item found");
+		}
+	}
+	
+	private void checkContacts(Set<Contact> checkSet){
+		if (!contactSet.containsAll(checkSet)) throw new IllegalArgumentException("One or more contacts do not exist");
+		if (checkSet == null) throw new NullPointerException("Contacts is null");
+		if (checkSet.isEmpty()) throw new IllegalArgumentException("Contacts list is empty");
+	}
 
 }

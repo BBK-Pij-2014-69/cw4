@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -57,7 +58,7 @@ public class ContactManagerImplTest {
 		for (Contact c : myset){ assertEquals(1, c.getId());}
 		assertEquals(1,contactManager.getContacts("Diana Prince").size());
 		assertTrue(contactManager.getContacts(1).containsAll(contacts));
-		File file = new File("contactManager.txt");
+		File file = new File("contacts.txt");
 		try{
 			file.delete();
 		}catch (Exception e){
@@ -243,7 +244,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionNotesNull() {
 		thrown.expect(NullPointerException.class);
-		thrown.expectMessage("Notes is Null");
+		thrown.expectMessage("Null item found");
 		contactManager.addMeetingNotes(1, null);
 	}
 
@@ -306,7 +307,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void testFlush() {
 		contactManager.flush();
-		File file = new File("contactManager.txt");
+		File file = new File("contacts.txt");
 		assertTrue(file.exists());
 		try{
 			file.delete();
