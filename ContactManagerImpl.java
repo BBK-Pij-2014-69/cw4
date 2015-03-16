@@ -14,9 +14,9 @@ public class ContactManagerImpl implements ContactManager {
 	private int contactId = 0;
 	private List<Meeting> meetingsList = new ArrayList<Meeting>();
 	private Set<Contact> contactSet = new HashSet<Contact>();
+	private File file = new File("contacts.txt");
 	
 	public ContactManagerImpl(){
-		File file = new File("contacts.txt");
 		if (file.exists()){
 			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
 				meetingsList = (ArrayList) in.readObject();
@@ -168,7 +168,6 @@ public class ContactManagerImpl implements ContactManager {
 	
 	@Override
 	public void flush() {
-		File file = new File("contacts.txt");
 		if (file.exists()){
 			try{
 				file.delete();
