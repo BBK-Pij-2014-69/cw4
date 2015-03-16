@@ -102,7 +102,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		checkContacts(contacts);
-		if (contacts == null || date == null) throw new NullPointerException();
+		if (date == null) throw new NullPointerException();
 		checkNull(text);
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
