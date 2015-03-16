@@ -15,6 +15,12 @@ public class ContactImpl implements Contact, Serializable {
 		notes = "";
 	}
 	
+	public ContactImpl(int i, String name, String notes) {
+		this.ID = i;
+		this.name = name;
+		this.notes = notes;
+	}
+
 	@Override
 	public int getId() {
 		return ID;
