@@ -46,8 +46,10 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public PastMeeting getPastMeeting(int id) {
 		for (Meeting m : meetingsList){
-			if (m.getId() == id && m.getDate().after(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a future meeting");
-			if (m.getId() == id) return (PastMeeting) m;
+			if (m.getId() == id){
+				 if (m.getDate().after(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a future meeting");
+				 return (PastMeeting) m;
+			}
 		}
 		return null;
 	}
@@ -55,8 +57,10 @@ public class ContactManagerImpl implements ContactManager {
 	@Override 
 	public FutureMeeting getFutureMeeting(int id) {
 		for (Meeting m : meetingsList){
-			if (m.getId() == id && m.getDate().before(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a past meeting");
-			if (m.getId() == id) return (FutureMeeting) m;
+			if (m.getId() == id){
+				if (m.getDate().before(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a past meeting");
+				return (FutureMeeting) m;
+			}
 		}
 		return null;
 	}
