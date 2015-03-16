@@ -16,7 +16,7 @@ public class ContactManagerImpl implements ContactManager {
 	private Set<Contact> contactSet = new HashSet<Contact>();
 	
 	public ContactManagerImpl(){
-		File file = new File("contactManager.txt");
+		File file = new File("contacts.txt");
 		if (file.exists()){
 			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
 				meetingsList = (ArrayList) in.readObject();
@@ -37,7 +37,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		if (date.before(Calendar.getInstance())) throw new IllegalArgumentException("Invalid time/date");
-		if (!contactSet.containsAll(contacts)) throw new IllegalArgumentException("One or more contacts do not exist");
+		if (!contactSet.containsAll(contacts) || contacts.isEmpty()) throw new IllegalArgumentException("One or more contacts do not exist");
 		meetingId ++;
 		this.meetingsList.add(new FutureMeetingImpl(meetingId, date, contacts));
 		chronologicalReArrange(meetingsList);
@@ -158,7 +158,7 @@ public class ContactManagerImpl implements ContactManager {
 		if (name == null) throw new NullPointerException();
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
-			if (contact.getName().equals(name)){
+			if (contact.getName().contains(name)){
 				returnSet.add(contact);
 			}
 		}
@@ -168,7 +168,7 @@ public class ContactManagerImpl implements ContactManager {
 	
 	@Override
 	public void flush() {
-		File file = new File("contactManager.txt");
+		File file = new File("contacts.txt");
 		if (file.exists()){
 			try{
 				file.delete();
