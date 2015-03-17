@@ -87,9 +87,21 @@ public class ContactManagerImpl implements ContactManager {
 	public List<Meeting> getFutureMeetingList(Calendar date) {
 		List<Meeting> returnList = new ArrayList<Meeting>();
 		for (Meeting m : meetingsList){
-			if (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) && m.getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) returnList.add(m);
+			if (DatesAreEqual(m.getDate(), date)) returnList.add(m);
 		}
 		return returnList;
+	}
+	
+	 /**
+	 * Method to check if two dates (ignoring time of day) are the same.
+	 * 
+	 * @param Calendar, two calendars for comparing.
+	 * @return True if the dates are the same, False otherwise
+	 */
+	private boolean DatesAreEqual(Calendar c1, Calendar c2){
+		if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && 
+				c2.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)) return true;
+		return false;
 	}
 
 	@Override
@@ -209,6 +221,11 @@ public class ContactManagerImpl implements ContactManager {
 		if (checkSet == null) throw new NullPointerException("Contacts is null");
 		if (!contactSet.containsAll(checkSet)) throw new IllegalArgumentException("One or more contacts do not exist");
 		if (checkSet.isEmpty()) throw new IllegalArgumentException("Contacts list is empty");
+	}
+	
+	//may or may not use
+	private boolean checkDate(Calendar date){
+		return (date.before(Calendar.getInstance()))? true : false;
 	}
 
 }
