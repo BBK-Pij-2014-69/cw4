@@ -245,7 +245,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionFutureDate() {
 		thrown.expect(IllegalStateException.class);
-		thrown.expectMessage("Future Date Found");
+		thrown.expectMessage("This id is for a future meeting");
 		contactManager.addMeetingNotes(2, "date in future");
 	}
 	
