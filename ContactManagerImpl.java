@@ -11,6 +11,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @see ContactManager
+ * @author Kieren Millar
+ *
+ */
 public class ContactManagerImpl implements ContactManager {
 	private int meetingId = 0; // used to give meetings unique ids
 	private int contactId = 0; // used to give contacts unique ids.
@@ -18,6 +23,10 @@ public class ContactManagerImpl implements ContactManager {
 	private Set<Contact> contactSet = new LinkedHashSet<Contact>();
 	private File file = new File("contacts.txt");
 	
+	/**
+	 * Constructor that creates a simple ContactManagerImpl or
+	 * loads up a previously saved file.
+	 */
 	public ContactManagerImpl(){
 		if (file.exists()){
 			BufferedReader in = null;
@@ -69,6 +78,9 @@ public class ContactManagerImpl implements ContactManager {
 		checkMeetingList();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		if (date.before(Calendar.getInstance())) throw new IllegalArgumentException("Date is in the past");
@@ -79,6 +91,9 @@ public class ContactManagerImpl implements ContactManager {
 		return meetingId;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public PastMeeting getPastMeeting(int id) {
 		checkMeetingList();
@@ -91,6 +106,9 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override 
 	public FutureMeeting getFutureMeeting(int id) {
 		checkMeetingList();
@@ -103,6 +121,9 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Meeting getMeeting(int id) {
 		checkMeetingList();
@@ -112,6 +133,9 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
 		checkMeetingList();
@@ -123,6 +147,9 @@ public class ContactManagerImpl implements ContactManager {
 		return returnList;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Meeting> getFutureMeetingList(Calendar date) {
 		checkMeetingList();
@@ -146,6 +173,9 @@ public class ContactManagerImpl implements ContactManager {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
 		checkMeetingList();
@@ -157,6 +187,9 @@ public class ContactManagerImpl implements ContactManager {
 		return returnList;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		checkContacts(contacts);
@@ -166,6 +199,9 @@ public class ContactManagerImpl implements ContactManager {
 		chronologicalReArrange();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	// TODO notes
 	public void addMeetingNotes(int id, String text) {
@@ -185,6 +221,9 @@ public class ContactManagerImpl implements ContactManager {
 		chronologicalReArrange();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void addNewContact(String name, String notes) {
 		checkIfArgumentsAreNull(name, notes);
@@ -194,7 +233,9 @@ public class ContactManagerImpl implements ContactManager {
 		contactSet.add(contactToAdd);
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	//TODO notes
 	public Set<Contact> getContacts(int... ids) {
@@ -212,6 +253,9 @@ public class ContactManagerImpl implements ContactManager {
 		return returnSet;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Set<Contact> getContacts(String name) {
 		checkIfArgumentsAreNull(name);
@@ -224,7 +268,9 @@ public class ContactManagerImpl implements ContactManager {
 		return returnSet;
 	}
 
-	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void flush() {
 		if (file.exists()){
