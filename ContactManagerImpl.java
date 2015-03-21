@@ -27,11 +27,13 @@ public class ContactManagerImpl implements ContactManager {
 				String[] string;
 				Calendar date;// used for readability
 				Set<Contact> setOfContacts;//// used for readability
+				//reads contacts from the file
 				while ((line = in.readLine()) != null && !line.equals("PastMeetings")) {
 					string = line.split(",",-1);
 					contactSet.add(new ContactImpl(Integer.parseInt(string[0]),string[1],string[2]));
 					contactId++;
 				}
+				//reads future meeting from the file
 				while((line = in.readLine()) != null && !line.equals("FutureMeetings")) {
 					string = line.split(",",-1);
 					date = new GregorianCalendar(Integer.parseInt(string[2]),Integer.parseInt(string[3]),
@@ -43,6 +45,7 @@ public class ContactManagerImpl implements ContactManager {
 					meetingsList.add(new PastMeetingImpl(Integer.parseInt(string[0]), date, setOfContacts, string[1]));
 					meetingId ++;
 				}
+				//reads past meetings from the file
 				while((line = in.readLine()) != null) {
 					string = line.split(",",-1);
 					date = new GregorianCalendar(Integer.parseInt(string[1]),Integer.parseInt(string[2]),
