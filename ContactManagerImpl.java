@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,23 +15,61 @@ public class ContactManagerImpl implements ContactManager {
 	private int meetingId = 0; // used to give meetings unique ids
 	private int contactId = 0; // used to give contacts unique ids.
 	private List<Meeting> meetingsList = new ArrayList<Meeting>();
-	private Set<Contact> contactSet = new HashSet<Contact>();
+	private Set<Contact> contactSet = new LinkedHashSet<Contact>();
 	private File file = new File("contacts.txt");
 	
 	public ContactManagerImpl(){
 		if (file.exists()){
-			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
-				meetingsList = (ArrayList) in.readObject();
-				contactSet = (HashSet) in.readObject();
-				meetingId = (int) in.readObject();
-				contactId = (int) in.readObject();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+			BufferedReader in = null;
+			try {
+				in = new BufferedReader(new FileReader(file)); 
+				String line;
+				String[] string;
+				while ((line = in.readLine()) != null && !line.equals("PastMeetings")) {
+					string = line.split(",",-1);
+					contactSet.add(new ContactImpl(Integer.parseInt(string[0]),string[1],string[2]));
+					contactId++;
+				}
+				while((line = in.readLine()) != null && !line.equals("FutureMeetings")) {
+					string = line.split(",",-1);
+					Calendar date = new GregorianCalendar(Integer.parseInt(string[1]),Integer.parseInt(string[2]),
+							Integer.parseInt(string[3]),Integer.parseInt(string[4]),Integer.parseInt(string[5]));
+					Set<Contact> set = new HashSet<Contact>();
+					for (int i = 6; i < string.length; i = i + 3){
+						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
+					}
+					addNewPastMeeting(set, date, string[0]);
+				}
+				while((line = in.readLine()) != null) {
+					string = line.split(",",-1);
+					Calendar date = new GregorianCalendar(Integer.parseInt(string[0]),Integer.parseInt(string[1]),
+							Integer.parseInt(string[2]),Integer.parseInt(string[3]),Integer.parseInt(string[4]));
+					Set<Contact> set = new HashSet<Contact>();
+					for (int i = 5; i < string.length; i = i + 3){
+						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
+					}
+					addFutureMeeting(set, date);
+				}
+				
+			} catch (FileNotFoundException ex) { 
+				System.out.println("File " + file + " does not exist.");
+			} catch (IOException ex) { 
+				ex.printStackTrace();
+			} finally {
+				closeReader(in);
 			}
+//			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
+//				meetingsList = (ArrayList) in.readObject();
+//				contactSet = (HashSet) in.readObject();
+//				meetingId = (int) in.readObject();
+//				contactId = (int) in.readObject();
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			} catch (ClassNotFoundException e) {
+//				e.printStackTrace();
+//			}
 		}
 		checkMeetingList();
 	}
@@ -200,17 +240,49 @@ public class ContactManagerImpl implements ContactManager {
 				e.printStackTrace();
 			}
 		}
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
-	         out.writeObject(meetingsList);
-	         out.writeObject(contactSet);
-	         out.writeObject(meetingId);
-	         out.writeObject(contactId);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(file);
+			for (Contact c : contactSet){
+				out.println(c.getId() + "," + c.getName() + "," + c.getNotes() + ",");
+			}
+			out.println("PastMeetings");
+			for (Meeting m : meetingsList){
+				if (m instanceof PastMeeting){
+					out.println(((PastMeeting) m).getNotes() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
+				}
+			}
+			out.println("FutureMeetings");
+			for (Meeting m : meetingsList){
+				if (m instanceof FutureMeeting){
+					out.println(dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
+				}
+			}
+			} catch (FileNotFoundException ex) {
+				System.out.println("Cannot write to file " + file + ".");
+			} finally {
+				out.close();
+			}
 		}
-	}
+//		if (file.exists()){
+//			try{
+//				file.delete();
+//			}
+//			catch (Exception e){
+//				e.printStackTrace();
+//			}
+//		}
+//		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
+//	         out.writeObject(meetingsList);
+//	         out.writeObject(contactSet);
+//	         out.writeObject(meetingId);
+//	         out.writeObject(contactId);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/**
 	 * Method that keeps the internal list of meetings in chronological order.
@@ -224,6 +296,7 @@ public class ContactManagerImpl implements ContactManager {
 			}            
 		}); 
 	}
+	
 	
 	/**
 	 * Method to check for null arguments.
@@ -263,5 +336,27 @@ public class ContactManagerImpl implements ContactManager {
 		chronologicalReArrange();
 	}
 	
+	private String dateToString(Calendar c){
+		String returnString = c.get(Calendar.YEAR) + "," + c.get(Calendar.MONTH) +
+				"," + c.get(Calendar.DAY_OF_MONTH) + "," + c.get(Calendar.HOUR_OF_DAY) +
+				"," + c.get(Calendar.MINUTE);
+		return returnString;
+	}
+	
+	private String contactSetToString(Set<Contact> s){
+		String returnString = null;
+		for(Contact c : s){
+			returnString = c.getId() + "," + c.getName() + "," + c.getNotes();
+		}
+		return returnString;
+	}
+	
+	private void closeReader(Reader reader) { 
+		try {
+			if (reader != null) reader.close();
+		} catch (IOException ex) {
+	         ex.printStackTrace();
+	    }
+	}
 
 }
