@@ -51,17 +51,24 @@ public class ContactManagerImplTest {
 	
 	@Test
 	public void testConstructor(){
-		contactManager.flush();
-		contactManager = new ContactManagerImpl();
-		Set<Contact> myset = contactManager.getContacts(1);
-		for (Contact c : myset){ assertEquals(1, c.getId());}
-		assertEquals(1,contactManager.getContacts("Diana Prince").size());
-		assertTrue(contactManager.getContacts(1).containsAll(contacts));
-		File file = new File("contacts.txt");
 		try{
-			file.delete();
+		contactManager.flush();//creates a .txt file for the constructor to load.
+		contactManager = null;
+		contactManager = new ContactManagerImpl(); // loads a contactManager with the created .txt file
+		Set<Contact> myset = contactManager.getContacts(1);
+		for (Contact c : myset){ //checks that the contact has been reloaded correctly
+			assertEquals(1, c.getId());
+			assertEquals("Diana Prince", c.getName());
+			assertEquals("I AM WONDER WOMAN", c.getNotes());
+		}
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		myset = contactManager.getContacts(2);
+		for (Contact c : myset) assertEquals(2, c.getId());//checks that the id added to the new contact is correct
 		}catch (Exception e){
 			e.printStackTrace();
+		}finally{
+			File file = new File("contacts.txt");
+			file.delete();
 		}
 	}
 	
