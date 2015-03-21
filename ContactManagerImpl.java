@@ -60,18 +60,6 @@ public class ContactManagerImpl implements ContactManager {
 			} finally {
 				closeReader(in);
 			}
-//			try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
-//				meetingsList = (ArrayList) in.readObject();
-//				contactSet = (HashSet) in.readObject();
-//				meetingId = (int) in.readObject();
-//				contactId = (int) in.readObject();
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			} catch (ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
 		}
 		checkMeetingList();
 	}
@@ -266,25 +254,6 @@ public class ContactManagerImpl implements ContactManager {
 				out.close();
 			}
 		}
-//		if (file.exists()){
-//			try{
-//				file.delete();
-//			}
-//			catch (Exception e){
-//				e.printStackTrace();
-//			}
-//		}
-//		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))){
-//	         out.writeObject(meetingsList);
-//	         out.writeObject(contactSet);
-//	         out.writeObject(meetingId);
-//	         out.writeObject(contactId);
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 	
 	/**
 	 * Method that keeps the internal list of meetings in chronological order.
