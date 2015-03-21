@@ -132,6 +132,7 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
+	// TODO notes
 	public void addMeetingNotes(int id, String text) {
 		checkIfArgumentsAreNull(text, id);
 		PastMeetingImpl tempMeeting = null;
@@ -160,6 +161,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	
 	@Override
+	//TODO notes
 	public Set<Contact> getContacts(int... ids) {
 		int noOfIds = ids.length;
 		Set <Contact> returnSet = new HashSet<Contact>();
@@ -210,6 +212,11 @@ public class ContactManagerImpl implements ContactManager {
 		}
 	}
 	
+	/**
+	 * Method that keeps the internal list of meetings in chronological order.
+	 * 
+	 * Implemented every time the internal list is changed.
+	 */
 	private void chronologicalReArrange(){
 		Collections.sort(meetingsList, new Comparator<Meeting>() {
 			public int compare(Meeting o1, Meeting o2) {
@@ -218,12 +225,26 @@ public class ContactManagerImpl implements ContactManager {
 		}); 
 	}
 	
+	/**
+	 * Method to check for null arguments.
+	 * 
+	 * @param Objects an arbitrary number of objects
+	 * @return NullPointerException any of the arguments is null
+	 */
 	private void checkIfArgumentsAreNull(Object... nullObjects){
 		for (Object o : nullObjects){
 			if (o == null) throw new NullPointerException("Null item found");
 		}
 	}
 	
+	/**
+	 * Method for checking if a set of contacts is null, empty, or if any 
+	 *  of the contacts do not exist.
+	 * 
+	 * @param Set the set of contacts to be checked
+	 * @return Exceptions if a set of contacts is null, empty, or if any
+	 *         of the contacts do not exist.
+	 */
 	private void checkContacts(Set<Contact> checkSet){
 		if (checkSet == null) throw new NullPointerException("Contacts is null");
 		if (!contactSet.containsAll(checkSet)) throw new IllegalArgumentException("One or more contacts do not exist");
