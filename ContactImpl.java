@@ -11,18 +11,31 @@ package cw4;
  */
 public class ContactImpl implements Contact{
 	
-	private int ID;
+	private int ID;//uniqueness not controlled here
 	private String name;
 	private String notes;
 
-	public ContactImpl(int ID, String name){
-		this.ID = ID;
+	/**
+	 * Constructor using just an id and a name.
+	 * 
+	 * @param ID
+	 * @param name
+	 */
+	public ContactImpl(int id, String name){
+		this.ID = id;
 		this.name = name;
 		notes = "";
 	}
 	
-	public ContactImpl(int i, String name, String notes) {
-		this.ID = i;
+	/**
+	 * Constructor that also accepts notes as a parameter.
+	 * 
+	 * @param id
+	 * @param name
+	 * @param notes
+	 */
+	public ContactImpl(int id, String name, String notes) {
+		this.ID = id;
 		this.name = name;
 		this.notes = notes;
 	}
@@ -59,6 +72,11 @@ public class ContactImpl implements Contact{
 		notes = note;
 	}
 
+	/**
+	 * Overridden equals method for comparing two contacts,
+	 * only returns true if the id, name, and notes are equal.
+	 * 
+	 */
 	@Override
 	public boolean equals(Object o){
 		if (o == this) return false;
@@ -71,6 +89,10 @@ public class ContactImpl implements Contact{
 		}
 	}
 	
+	/**
+	 * Overridden hashcode method using id, name and notes as parameters
+	 * to produce the hashcode. 
+	 */
 	@Override
     public int hashCode() {
 		int hash = 5;
