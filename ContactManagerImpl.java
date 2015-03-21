@@ -98,7 +98,8 @@ public class ContactManagerImpl implements ContactManager {
 	 * @param Calendar, two calendars for comparing.
 	 * @return True if the dates are the same, False otherwise
 	 */
-	private boolean DatesAreEqual(Calendar c1, Calendar c2){
+	//This method was written just for the sake of readability.
+	private boolean DatesAreEqual(Calendar c1, Calendar c2){ 
 		if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && 
 				c2.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR)) return true;
 		return false;
@@ -117,8 +118,7 @@ public class ContactManagerImpl implements ContactManager {
 	@Override
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		checkContacts(contacts);
-		if (date == null) throw new NullPointerException("Null item found");
-		checkNull(text);
+		checkIfArgumentsAreNull(text, date);
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
 		chronologicalReArrange(meetingsList);
@@ -126,7 +126,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
-		checkNull(text);
+		checkIfArgumentsAreNull(text, id);
 		PastMeetingImpl tempMeeting = null;
 		int indexToRemove = 0;
 		for(Meeting m : meetingsList){
@@ -144,7 +144,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public void addNewContact(String name, String notes) {
-		checkNull(name, notes);
+		checkIfArgumentsAreNull(name, notes);
 		contactId++;
 		Contact contactToAdd = new ContactImpl(contactId, name);
 		contactToAdd.addNotes(notes);
@@ -170,7 +170,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Set<Contact> getContacts(String name) {
-		checkNull(name);
+		checkIfArgumentsAreNull(name);
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
 			if (contact.getName().contains(name)){
@@ -211,9 +211,9 @@ public class ContactManagerImpl implements ContactManager {
 		}); 
 	}
 	
-	private void checkNull(String... nullString){
-		for (String s : nullString){
-			if (s == null) throw new NullPointerException("Null item found");
+	private void checkIfArgumentsAreNull(Object... nullObjects){
+		for (Object o : nullObjects){
+			if (o == null) throw new NullPointerException("Null item found");
 		}
 	}
 	
@@ -224,7 +224,7 @@ public class ContactManagerImpl implements ContactManager {
 	}
 	
 	//may or may not use
-	private boolean checkDate(Calendar date){
+	private boolean compareDates(Calendar date){
 		return (date.before(Calendar.getInstance()))? true : false;
 	}
 
