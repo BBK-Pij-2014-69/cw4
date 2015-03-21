@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 public class ContactManagerImpl implements ContactManager {
-	private int meetingId = 0;
-	private int contactId = 0;
+	private int meetingId = 0; // used to give meetings unique ids
+	private int contactId = 0; // used to give contacts unique ids.
 	private List<Meeting> meetingsList = new ArrayList<Meeting>();
 	private Set<Contact> contactSet = new HashSet<Contact>();
 	private File file = new File("contacts.txt");
