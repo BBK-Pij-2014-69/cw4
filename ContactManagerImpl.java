@@ -22,7 +22,7 @@ public class ContactManagerImpl implements ContactManager {
 				meetingsList = (ArrayList) in.readObject();
 				contactSet = (HashSet) in.readObject();
 				meetingId = (int) in.readObject();
-				contactId = (int) in.readObject();	
+				contactId = (int) in.readObject();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -31,20 +31,22 @@ public class ContactManagerImpl implements ContactManager {
 				e.printStackTrace();
 			}
 		}
+		checkMeetingList();
 	}
 
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		if (date.before(Calendar.getInstance())) throw new IllegalArgumentException("Invalid time/date");
+		if (date.before(Calendar.getInstance())) throw new IllegalArgumentException("Date is in the past");
 		checkContacts(contacts);
 		meetingId ++;
 		this.meetingsList.add(new FutureMeetingImpl(meetingId, date, contacts));
-		chronologicalReArrange(meetingsList);
+		chronologicalReArrange();
 		return meetingId;
 	}
 
 	@Override
 	public PastMeeting getPastMeeting(int id) {
+		checkMeetingList();
 		for (Meeting m : meetingsList){
 			if (m.getId() == id){
 				 if (m.getDate().after(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a future meeting");
@@ -56,6 +58,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override 
 	public FutureMeeting getFutureMeeting(int id) {
+		checkMeetingList();
 		for (Meeting m : meetingsList){
 			if (m.getId() == id){
 				if (m.getDate().before(Calendar.getInstance())) throw new IllegalArgumentException("This id is for a past meeting");
@@ -67,6 +70,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public Meeting getMeeting(int id) {
+		checkMeetingList();
 		for (Meeting m : meetingsList){
 			if (m.getId() == id) return m;
 		}
@@ -75,6 +79,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public List<Meeting> getFutureMeetingList(Contact contact) {
+		checkMeetingList();
 		if (!contactSet.contains(contact)) throw new IllegalArgumentException("Contact does not exist");
 		ArrayList<Meeting> returnList = new ArrayList<Meeting>();
 		for (Meeting m : meetingsList){
@@ -85,6 +90,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public List<Meeting> getFutureMeetingList(Calendar date) {
+		checkMeetingList();
 		List<Meeting> returnList = new ArrayList<Meeting>();
 		for (Meeting m : meetingsList){
 			if (DatesAreEqual(m.getDate(), date)) returnList.add(m);
@@ -107,6 +113,7 @@ public class ContactManagerImpl implements ContactManager {
 
 	@Override
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
+		checkMeetingList();
 		if (!contactSet.contains(contact)) throw new IllegalArgumentException("Contact does not exist");
 		ArrayList<PastMeeting> returnList = new ArrayList<PastMeeting>();
 		for (Meeting m : meetingsList){
@@ -121,7 +128,7 @@ public class ContactManagerImpl implements ContactManager {
 		checkIfArgumentsAreNull(text, date);
 		meetingId++;
 		meetingsList.add(new PastMeetingImpl(meetingId, date, contacts, text));
-		chronologicalReArrange(meetingsList);
+		chronologicalReArrange();
 	}
 
 	@Override
@@ -131,7 +138,7 @@ public class ContactManagerImpl implements ContactManager {
 		int indexToRemove = 0;
 		for(Meeting m : meetingsList){
 			if (m.getId() == id){
-				if (m.getDate().after(Calendar.getInstance())) throw new IllegalStateException("Future Date Found");
+				if (m.getDate().after(Calendar.getInstance())) throw new IllegalStateException("This id is for a future meeting");
 				tempMeeting = new PastMeetingImpl(id, m.getDate(), m.getContacts(), text);
 				indexToRemove = meetingsList.indexOf(m);
 			}
@@ -139,7 +146,7 @@ public class ContactManagerImpl implements ContactManager {
 		if (tempMeeting == null) throw new IllegalArgumentException("Meeting does not exist");
 		meetingsList.remove(indexToRemove);
 		meetingsList.add(tempMeeting);
-		chronologicalReArrange(meetingsList);
+		chronologicalReArrange();
 	}
 
 	@Override
@@ -203,7 +210,7 @@ public class ContactManagerImpl implements ContactManager {
 		}
 	}
 	
-	private void chronologicalReArrange(List<Meeting> list){
+	private void chronologicalReArrange(){
 		Collections.sort(meetingsList, new Comparator<Meeting>() {
 			public int compare(Meeting o1, Meeting o2) {
 				return o1.getDate().compareTo(o2.getDate());
@@ -223,9 +230,17 @@ public class ContactManagerImpl implements ContactManager {
 		if (checkSet.isEmpty()) throw new IllegalArgumentException("Contacts list is empty");
 	}
 	
-	//may or may not use
-	private boolean compareDates(Calendar date){
-		return (date.before(Calendar.getInstance()))? true : false;
+	 /**
+	 * Method to convert existing future meetings into past meetings if their date is now in the past.
+	 * 
+	 * This method has been called for any method that checks the meetingsList for a particular meeting and the constructor.
+	 */
+	private void checkMeetingList(){
+		for(Meeting m : meetingsList){
+			if (m.getDate().before(Calendar.getInstance()) && m instanceof FutureMeeting) addMeetingNotes(m.getId(),"");
+		}
+		chronologicalReArrange();
 	}
+	
 
 }
