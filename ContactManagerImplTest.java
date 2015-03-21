@@ -89,7 +89,7 @@ public class ContactManagerImplTest {
 	@Test
 	public void throwsExceptionWhenInvalidDateIsUsed() {
 		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("Invalid time/date");
+		thrown.expectMessage("Date is in the past");
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00));
 	}
 	
