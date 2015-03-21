@@ -25,6 +25,8 @@ public class ContactManagerImpl implements ContactManager {
 				in = new BufferedReader(new FileReader(file)); 
 				String line;
 				String[] string;
+				Calendar date;// used for readability
+				Set<Contact> setOfContacts;//// used for readability
 				while ((line = in.readLine()) != null && !line.equals("PastMeetings")) {
 					string = line.split(",",-1);
 					contactSet.add(new ContactImpl(Integer.parseInt(string[0]),string[1],string[2]));
@@ -32,24 +34,24 @@ public class ContactManagerImpl implements ContactManager {
 				}
 				while((line = in.readLine()) != null && !line.equals("FutureMeetings")) {
 					string = line.split(",",-1);
-					Calendar date = new GregorianCalendar(Integer.parseInt(string[2]),Integer.parseInt(string[3]),
+					date = new GregorianCalendar(Integer.parseInt(string[2]),Integer.parseInt(string[3]),
 							Integer.parseInt(string[4]),Integer.parseInt(string[5]),Integer.parseInt(string[6]));
-					Set<Contact> set = new HashSet<Contact>();
+					setOfContacts = new HashSet<Contact>();
 					for (int i = 7; i < string.length; i = i + 3){
-						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
+						setOfContacts.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
 					}
-					meetingsList.add(new PastMeetingImpl(Integer.parseInt(string[0]), date, set, string[1]));
+					meetingsList.add(new PastMeetingImpl(Integer.parseInt(string[0]), date, setOfContacts, string[1]));
 					meetingId ++;
 				}
 				while((line = in.readLine()) != null) {
 					string = line.split(",",-1);
-					Calendar date = new GregorianCalendar(Integer.parseInt(string[1]),Integer.parseInt(string[2]),
+					date = new GregorianCalendar(Integer.parseInt(string[1]),Integer.parseInt(string[2]),
 							Integer.parseInt(string[3]),Integer.parseInt(string[4]),Integer.parseInt(string[5]));
-					Set<Contact> set = new HashSet<Contact>();
+					setOfContacts = new HashSet<Contact>();
 					for (int i = 6; i < string.length; i = i + 3){
-						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
+						setOfContacts.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
 					}
-					meetingsList.add(new FutureMeetingImpl(Integer.parseInt(string[0]), date, set));
+					meetingsList.add(new FutureMeetingImpl(Integer.parseInt(string[0]), date, setOfContacts));
 					meetingId ++;
 				}
 				
@@ -248,12 +250,12 @@ public class ContactManagerImpl implements ContactManager {
 					out.println(m.getId() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
 				}
 			}
-			} catch (FileNotFoundException ex) {
-				System.out.println("Cannot write to file " + file + ".");
-			} finally {
-				out.close();
-			}
+		} catch (FileNotFoundException ex) {
+			System.out.println("Cannot write to file " + file + ".");
+		} finally {
+			out.close();
 		}
+	}
 	
 	/**
 	 * Method that keeps the internal list of meetings in chronological order.
@@ -307,6 +309,12 @@ public class ContactManagerImpl implements ContactManager {
 		chronologicalReArrange();
 	}
 	
+	/**
+	 * Method for creating a useful string from a Calendar date,
+	 * for the purpose of printing to a file
+	 * @param Calendar 
+	 * @return String of given date
+	 */
 	private String dateToString(Calendar c){
 		String returnString = c.get(Calendar.YEAR) + "," + c.get(Calendar.MONTH) +
 				"," + c.get(Calendar.DAY_OF_MONTH) + "," + c.get(Calendar.HOUR_OF_DAY) +
@@ -314,14 +322,29 @@ public class ContactManagerImpl implements ContactManager {
 		return returnString;
 	}
 	
-	private String contactSetToString(Set<Contact> s){
+	/**
+	 * Method for creating a string from a set of contacts,
+	 * for use in printing to a file
+	 * @param set
+	 * @return a string of contacts
+	 */
+	private String contactSetToString(Set<Contact> set){
 		String returnString = null;
-		for(Contact c : s){
-			returnString = c.getId() + "," + c.getName() + "," + c.getNotes();
+		for(Contact c : set){
+			if (returnString == null){
+				returnString = c.getId() + "," + c.getName() + "," + c.getNotes();
+			}else{
+				returnString = "," + returnString + c.getId() + "," + c.getName() + "," + c.getNotes();
+			}
 		}
 		return returnString;
 	}
 	
+	/**
+	 * Method for closing a reader,
+	 * used for code readability.
+	 * @param reader
+	 */
 	private void closeReader(Reader reader) { 
 		try {
 			if (reader != null) reader.close();
