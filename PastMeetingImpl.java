@@ -1,12 +1,10 @@
 package cw4;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 
-public class PastMeetingImpl implements PastMeeting, Serializable {
+public class PastMeetingImpl implements PastMeeting{
 
-	private static final long serialVersionUID = 4031950374020931191L;
 	private int id;
 	private Calendar date;
 	private Set<Contact> contacts;

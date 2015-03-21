@@ -1,12 +1,10 @@
 package cw4;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Set;
 
-public class FutureMeetingImpl implements FutureMeeting, Serializable {
+public class FutureMeetingImpl implements FutureMeeting{
 	
-	private static final long serialVersionUID = -5265186606559772231L;
 	private int id;
 	private Calendar date;
 	private Set<Contact> contacts;

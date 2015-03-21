@@ -1,6 +1,5 @@
 package cw4;
 
-import java.io.Serializable;
 
 /**
  * A contact is a person we are making business with or may do in the future. 
@@ -10,9 +9,8 @@ import java.io.Serializable;
  * @author Kieren Millar
  *
  */
-public class ContactImpl implements Contact, Serializable {
+public class ContactImpl implements Contact{
 	
-	private static final long serialVersionUID = -9114818729002509790L;
 	private int ID;
 	private String name;
 	private String notes;
