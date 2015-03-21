@@ -55,6 +55,9 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
 		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
 		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 20, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 28, 10, 00));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 01, 23, 10, 00));
 		contactManager.flush(); //creates a .txt file for the constructor to load.
 		contactManager = null;
 		contactManager = new ContactManagerImpl(); // loads a contactManager with the created .txt file
@@ -69,6 +72,9 @@ public class ContactManagerImplTest {
 		//now checking meetings
 		assertEquals(new GregorianCalendar(2014, 00, 23, 12, 00),contactManager.getMeeting(1).getDate());//checks meetings were added back correctly
 		assertEquals(new GregorianCalendar(2016, 00, 23, 12, 00),contactManager.getMeeting(2).getDate());
+		assertEquals(new GregorianCalendar(2016, 00, 20, 10, 00),contactManager.getMeeting(3).getDate());
+		assertEquals(new GregorianCalendar(2016, 00, 28, 10, 00),contactManager.getMeeting(4).getDate());
+		assertEquals(new GregorianCalendar(2016, 01, 23, 10, 00),contactManager.getMeeting(5).getDate());
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 20, 10, 00));
 		assertEquals(3,contactManager.getMeeting(3).getId());// checks that meetingsId is correct
 		}catch (Exception e){
