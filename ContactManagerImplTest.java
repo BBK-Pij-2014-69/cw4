@@ -52,18 +52,20 @@ public class ContactManagerImplTest {
 	@Test
 	public void testConstructor(){
 		try{
-		contactManager.flush();//creates a .txt file for the constructor to load.
+		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
+		contactManager.addNewContact("Clark Kent", "I AM SUPERMAN");
+		contactManager.addNewContact("Bruce Wayne", "I AM BATMAN");
+		contactManager.flush(); //creates a .txt file for the constructor to load.
 		contactManager = null;
 		contactManager = new ContactManagerImpl(); // loads a contactManager with the created .txt file
-		Set<Contact> myset = contactManager.getContacts(1);
-		for (Contact c : myset){ //checks that the contact has been reloaded correctly
-			assertEquals(1, c.getId());
-			assertEquals("Diana Prince", c.getName());
-			assertEquals("I AM WONDER WOMAN", c.getNotes());
-		}
-		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
-		myset = contactManager.getContacts(2);
-		for (Contact c : myset) assertEquals(2, c.getId());//checks that the id added to the new contact is correct
+		Set<Contact> myset = contactManager.getContacts(1,2,3,4);
+		contacts.add(ArthurCurry);
+		contacts.add(ClarkKent);
+		contacts.add(BruceWayne);
+		assertTrue(myset.containsAll(contacts)); //checks that the contacts have been reloaded correctly
+		contactManager.addNewContact("Billy Batson", "I AM SHAZAM");
+		myset = contactManager.getContacts(5);
+		for (Contact c : myset) assertEquals(5, c.getId()); //checks that the id added to the new contact is correct
 		}catch (Exception e){
 			e.printStackTrace();
 		}finally{
