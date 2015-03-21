@@ -32,23 +32,25 @@ public class ContactManagerImpl implements ContactManager {
 				}
 				while((line = in.readLine()) != null && !line.equals("FutureMeetings")) {
 					string = line.split(",",-1);
+					Calendar date = new GregorianCalendar(Integer.parseInt(string[2]),Integer.parseInt(string[3]),
+							Integer.parseInt(string[4]),Integer.parseInt(string[5]),Integer.parseInt(string[6]));
+					Set<Contact> set = new HashSet<Contact>();
+					for (int i = 7; i < string.length; i = i + 3){
+						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
+					}
+					meetingsList.add(new PastMeetingImpl(Integer.parseInt(string[0]), date, set, string[1]));
+					meetingId ++;
+				}
+				while((line = in.readLine()) != null) {
+					string = line.split(",",-1);
 					Calendar date = new GregorianCalendar(Integer.parseInt(string[1]),Integer.parseInt(string[2]),
 							Integer.parseInt(string[3]),Integer.parseInt(string[4]),Integer.parseInt(string[5]));
 					Set<Contact> set = new HashSet<Contact>();
 					for (int i = 6; i < string.length; i = i + 3){
 						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
 					}
-					addNewPastMeeting(set, date, string[0]);
-				}
-				while((line = in.readLine()) != null) {
-					string = line.split(",",-1);
-					Calendar date = new GregorianCalendar(Integer.parseInt(string[0]),Integer.parseInt(string[1]),
-							Integer.parseInt(string[2]),Integer.parseInt(string[3]),Integer.parseInt(string[4]));
-					Set<Contact> set = new HashSet<Contact>();
-					for (int i = 5; i < string.length; i = i + 3){
-						set.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
-					}
-					addFutureMeeting(set, date);
+					meetingsList.add(new FutureMeetingImpl(Integer.parseInt(string[0]), date, set));
+					meetingId ++;
 				}
 				
 			} catch (FileNotFoundException ex) { 
@@ -249,13 +251,13 @@ public class ContactManagerImpl implements ContactManager {
 			out.println("PastMeetings");
 			for (Meeting m : meetingsList){
 				if (m instanceof PastMeeting){
-					out.println(((PastMeeting) m).getNotes() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
+					out.println(m.getId() + "," + ((PastMeeting) m).getNotes() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
 				}
 			}
 			out.println("FutureMeetings");
 			for (Meeting m : meetingsList){
 				if (m instanceof FutureMeeting){
-					out.println(dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
+					out.println(m.getId() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
 				}
 			}
 			} catch (FileNotFoundException ex) {
