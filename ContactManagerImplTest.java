@@ -66,6 +66,11 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact("Billy Batson", "I AM SHAZAM");
 		myset = contactManager.getContacts(5);
 		for (Contact c : myset) assertEquals(5, c.getId()); //checks that the id added to the new contact is correct
+		//now checking meetings
+		assertEquals(new GregorianCalendar(2014, 00, 23, 12, 00),contactManager.getMeeting(1).getDate());//checks meetings were added back correctly
+		assertEquals(new GregorianCalendar(2016, 00, 23, 12, 00),contactManager.getMeeting(2).getDate());
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 20, 10, 00));
+		assertEquals(3,contactManager.getMeeting(3).getId());// checks that meetingsId is correct
 		}catch (Exception e){
 			e.printStackTrace();
 		}finally{
