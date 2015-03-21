@@ -18,7 +18,7 @@ import org.junit.rules.ExpectedException;
 public class ContactManagerImplTest {
 	ContactManager contactManager;
 	Set<Contact> contacts = new HashSet<Contact>();
-	Set<Contact> contactsEmpty = new HashSet<Contact>();
+	Set<Contact> contactsEmpty = new HashSet<Contact>();// a set for checking empty set error
 	Set<Contact> contactsNonExisting = new HashSet<Contact>();
 	Contact DianaPrince = new ContactImpl(1,"Diana Prince");
 	Contact ArthurCurry = new ContactImpl(2, "Arthur Curry");
