@@ -2,6 +2,14 @@ package cw4;
 
 import java.io.Serializable;
 
+/**
+ * A contact is a person we are making business with or may do in the future. 
+ * Contacts have an ID (unique), a name (probably unique, but maybe not), and notes that the user may want to save about them.
+ * Please Note that the uniqueness of the id of the contacts is controlled by ContactMangerImpl
+ * 
+ * @author Kieren Millar
+ *
+ */
 public class ContactImpl implements Contact, Serializable {
 	
 	private static final long serialVersionUID = -9114818729002509790L;
@@ -21,21 +29,33 @@ public class ContactImpl implements Contact, Serializable {
 		this.notes = notes;
 	}
 
+	/** 
+	 * {@inheritDoc} 
+	 */
 	@Override
 	public int getId() {
 		return ID;
 	}
 
+	/** 
+	 * {@inheritDoc} 
+	 */
 	@Override
 	public String getName() {
 		return name;
 	}
 
+	/** 
+	 * {@inheritDoc} 
+	 */
 	@Override
 	public String getNotes() {
 		return notes;
 	}
 
+	/** 
+	 * {@inheritDoc} 
+	 */
 	@Override
 	public void addNotes(String note) {
 		notes = note;
