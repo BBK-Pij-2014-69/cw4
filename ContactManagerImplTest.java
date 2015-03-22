@@ -393,7 +393,7 @@ public class ContactManagerImplTest {
 			e.printStackTrace();
 		}
 		// checks that a past meeting is created when the method getPastMeeting is called
-		assertEquals("", contactManager.getPastMeeting(3).getNotes());// checks that a past meeting is created when the method getPastMeeting is called
+		assertEquals("", contactManager.getPastMeeting(3).getNotes());
 	}
 	
 }
