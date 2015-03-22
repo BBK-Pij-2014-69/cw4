@@ -237,11 +237,11 @@ public class ContactManagerImpl implements ContactManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	//TODO notes
 	public Set<Contact> getContacts(int... ids) {
-		int noOfIds = ids.length;
+		int noOfIds = ids.length;//used so that only need to iterate over the contactSet once (which could be very large).
 		Set <Contact> returnSet = new HashSet<Contact>();
 		for (Contact c : contactSet){
+			if (noOfIds == 0) return returnSet;
 			for (int i : ids){
 				if (c.getId() == i){
 					returnSet.add(c);
