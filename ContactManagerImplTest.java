@@ -382,4 +382,18 @@ public class ContactManagerImplTest {
 		assertEquals("8 6 3 2 9 4 5 7 ", checkstring);
 	}
 	
+	@Test
+	public void testCheckMeetingList(){
+		GregorianCalendar date = (GregorianCalendar) Calendar.getInstance();
+		date.set(Calendar.SECOND, (date.get(Calendar.SECOND) + 1));//sets date 1 second in the future
+		contactManager.addFutureMeeting(contacts, date);
+		try {
+			Thread.sleep(2000);//sleeps for 2 seconds so the future meeting is in the past
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// checks that a past meeting is created when the method getPastMeeting is called
+		assertEquals("", contactManager.getPastMeeting(3).getNotes());// checks that a past meeting is created when the method getPastMeeting is called
+	}
+	
 }
