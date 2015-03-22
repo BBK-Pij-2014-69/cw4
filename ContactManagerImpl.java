@@ -203,11 +203,10 @@ public class ContactManagerImpl implements ContactManager {
 	 * {@inheritDoc}
 	 */
 	@Override
-	// TODO notes
 	public void addMeetingNotes(int id, String text) {
 		checkIfArgumentsAreNull(text, id);
-		PastMeetingImpl tempMeeting = null;
-		int indexToRemove = 0;
+		PastMeetingImpl tempMeeting = null;//needed to avoid concurrent modification exception
+		int indexToRemove = 0;//needed to avoid concurrent modification exception
 		for(Meeting m : meetingsList){
 			if (m.getId() == id){
 				if (m.getDate().after(Calendar.getInstance())) throw new IllegalStateException("This id is for a future meeting");
@@ -352,8 +351,17 @@ public class ContactManagerImpl implements ContactManager {
 	 * This method has been called for any method that checks the meetingsList for a particular meeting and the constructor.
 	 */
 	private void checkMeetingList(){
+		PastMeeting tempMeeting = null;//needed to avoid concurrent modification exception
+		int indexToRemove = 0;//needed to avoid concurrent modification exception
 		for(Meeting m : meetingsList){
-			if (m.getDate().before(Calendar.getInstance()) && m instanceof FutureMeeting) addMeetingNotes(m.getId(),"");
+			if (m.getDate().before(Calendar.getInstance()) && m instanceof FutureMeeting){
+				indexToRemove = meetingsList.indexOf(m);
+				tempMeeting = new PastMeetingImpl(m.getId(), m.getDate(), m.getContacts(), "");
+			}
+		}
+		if (tempMeeting != null){
+			meetingsList.remove(indexToRemove);
+			meetingsList.add(tempMeeting);
 		}
 		chronologicalReArrange();
 	}
