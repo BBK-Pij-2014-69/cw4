@@ -34,39 +34,12 @@ public class ContactManagerImpl implements ContactManager {
 				in = new BufferedReader(new FileReader(file)); 
 				String line;
 				String[] string;
-				Calendar date;// used for readability
-				Set<Contact> setOfContacts;//// used for readability
-				//reads contacts from the file
-				while ((line = in.readLine()) != null && !line.equals("PastMeetings")) {
+				while ((line = in.readLine()) != null) {
 					string = line.split(",",-1);
-					contactSet.add(new ContactImpl(Integer.parseInt(string[0]),string[1],string[2]));
-					contactId++;
-				}
-				//reads future meeting from the file
-				while((line = in.readLine()) != null && !line.equals("FutureMeetings")) {
-					string = line.split(",",-1);
-					date = new GregorianCalendar(Integer.parseInt(string[2]),Integer.parseInt(string[3]),
-							Integer.parseInt(string[4]),Integer.parseInt(string[5]),Integer.parseInt(string[6]));
-					setOfContacts = new HashSet<Contact>();
-					for (int i = 7; i < string.length; i = i + 3){
-						setOfContacts.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
-					}
-					meetingsList.add(new PastMeetingImpl(Integer.parseInt(string[0]), date, setOfContacts, string[1]));
-					meetingId ++;
-				}
-				//reads past meetings from the file
-				while((line = in.readLine()) != null) {
-					string = line.split(",",-1);
-					date = new GregorianCalendar(Integer.parseInt(string[1]),Integer.parseInt(string[2]),
-							Integer.parseInt(string[3]),Integer.parseInt(string[4]),Integer.parseInt(string[5]));
-					setOfContacts = new HashSet<Contact>();
-					for (int i = 6; i < string.length; i = i + 3){
-						setOfContacts.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));
-					}
-					meetingsList.add(new FutureMeetingImpl(Integer.parseInt(string[0]), date, setOfContacts));
-					meetingId ++;
-				}
-				
+					if (string[0].equals("C")) createContacts(string);
+					if (string[0].equals("F")) createFutureMeetings(string);
+					if (string[0].equals("P")) createPastMeetings(string);
+				}	
 			} catch (FileNotFoundException ex) { 
 				System.out.println("File " + file + " does not exist.");
 			} catch (IOException ex) { 
@@ -77,7 +50,7 @@ public class ContactManagerImpl implements ContactManager {
 		}
 		checkMeetingList();
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -284,18 +257,16 @@ public class ContactManagerImpl implements ContactManager {
 		try {
 			out = new PrintWriter(file);
 			for (Contact c : contactSet){
-				out.println(c.getId() + "," + c.getName() + "," + c.getNotes() + ",");
+				out.println("C" + "," + c.getId() + "," + c.getName() + "," + c.getNotes() + ",");
 			}
-			out.println("PastMeetings");
 			for (Meeting m : meetingsList){
 				if (m instanceof PastMeeting){
-					out.println(m.getId() + "," + ((PastMeeting) m).getNotes() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
+					out.println("P" + "," + m.getId() + "," + ((PastMeeting) m).getNotes() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
 				}
 			}
-			out.println("FutureMeetings");
 			for (Meeting m : meetingsList){
 				if (m instanceof FutureMeeting){
-					out.println(m.getId() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
+					out.println("F" + "," + m.getId() + "," + dateToString(m.getDate()) + "," + contactSetToString(m.getContacts()));
 				}
 			}
 		} catch (FileNotFoundException ex) {
@@ -408,6 +379,44 @@ public class ContactManagerImpl implements ContactManager {
 		} catch (IOException ex) {
 	         ex.printStackTrace();
 	    }
+	}
+	/**
+	 * method that creates pastMeetings from the read file
+	 * @param string[]
+	 */
+	private void createPastMeetings(String[] string){
+		Calendar date = new GregorianCalendar(Integer.parseInt(string[3]), Integer.parseInt(string[4]),//creates date
+				Integer.parseInt(string[5]), Integer.parseInt(string[6]), Integer.parseInt(string[7]));
+		Set<Contact> setOfContacts = new HashSet<Contact>();
+		for (int i = 8; i < string.length; i = i + 3){
+			setOfContacts.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));//creates set of contacts
+		}
+		meetingsList.add(new PastMeetingImpl(Integer.parseInt(string[1]), date, setOfContacts, string[2]));
+		meetingId ++;
+	}
+	
+	/**
+	 * method that creates futureMeetings from the read file
+	 * @param string[]
+	 */
+	private void createFutureMeetings(String[] string){
+		Calendar date = new GregorianCalendar(Integer.parseInt(string[2]), Integer.parseInt(string[3]),//creates date
+				Integer.parseInt(string[4]), Integer.parseInt(string[5]), Integer.parseInt(string[6]));
+		Set<Contact> setOfContacts = new HashSet<Contact>();
+		for (int i = 7; i < string.length; i = i + 3){
+			setOfContacts.add(new ContactImpl(Integer.parseInt(string[i]), string[i+1], string[i+2]));//creates set of contacts
+		}
+		meetingsList.add(new FutureMeetingImpl(Integer.parseInt(string[1]), date, setOfContacts));
+		meetingId ++;
+	}
+	
+	/**
+	 * method that creates contacts from the read file
+	 * @param string[]
+	 */
+	private void createContacts(String[] string){
+		contactSet.add(new ContactImpl(Integer.parseInt(string[1]),string[2],string[3]));
+		contactId++;
 	}
 
 }
