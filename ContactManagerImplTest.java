@@ -139,21 +139,21 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testGetMeeting() {
-		contactManager.addNewContact("Diana Prince", "I AM WONDER WOMAN");
-		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 12, 00));
-		assertEquals(1,contactManager.getMeeting(1).getId());
-		assertNull(contactManager.getMeeting(10));
+		assertEquals(1,contactManager.getMeeting(1).getId());//past meeting returned
+		assertEquals(2, contactManager.getMeeting(2).getId());//future meeting returned
+		assertNull(contactManager.getMeeting(10));//null returned
 	}
 	
 	@Test
 	public void testGetFutureMeetingListContact() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
 		assertEquals(1, contactManager.getFutureMeetingList(DianaPrince).size());
-		assertTrue(contactManager.getFutureMeetingList(DianaPrince).get(0) instanceof FutureMeetingImpl);
-		assertEquals(0, contactManager.getFutureMeetingList(ArthurCurry).size());
+		assertTrue(contactManager.getFutureMeetingList(DianaPrince).get(0) instanceof FutureMeetingImpl);// checks that a future meeting is returned
+		assertTrue(contactManager.getFutureMeetingList(ArthurCurry).isEmpty());// checks an empty list is returned
 		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 10, 00));
-		//checks that first element time is before second element time.
-		assertTrue(contactManager.getFutureMeetingList(DianaPrince).get(0).getDate().before(contactManager.getFutureMeetingList(DianaPrince).get(1).getDate()));
+		List<Meeting> chronologicalTest = contactManager.getFutureMeetingList(DianaPrince);
+		//checks that first element time is before second element time (chronology).
+		assertTrue(chronologicalTest.get(0).getDate().before(chronologicalTest.get(1).getDate()));
 	}
 	
 	//getFutureMeetingList()
@@ -166,23 +166,28 @@ public class ContactManagerImplTest {
 
 	@Test
 	public void testGetFutureMeetingListCalendar() {
-		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2014, 00, 23)).size());
+		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2014, 00, 23)).size()); // checks a past meeting can be returned
 		assertEquals(2014, contactManager.getFutureMeetingList(new GregorianCalendar(2014, 00, 23)).get(0).getDate().get(Calendar.YEAR));
-		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).size());
+		assertEquals(1, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).size());// checks a future meeting can be returned
 		assertEquals(2016, contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23)).get(0).getDate().get(Calendar.YEAR));
+		contactManager.addFutureMeeting(contacts, new GregorianCalendar(2016, 00, 23, 10, 00));
+		List<Meeting> chronologicalTest = contactManager.getFutureMeetingList(new GregorianCalendar(2016, 00, 23));
+		//checks that first element time is before second element time (chronology).
+		assertTrue(chronologicalTest.get(0).getDate().before(chronologicalTest.get(1).getDate()));
 	}
 
 	@Test
 	public void testGetPastMeetingList() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
 		assertEquals(1, contactManager.getPastMeetingList(DianaPrince).size());
-		assertTrue(contactManager.getPastMeetingList(DianaPrince).get(0) instanceof PastMeetingImpl);
-		assertEquals(0, contactManager.getPastMeetingList(ArthurCurry).size());
+		assertTrue(contactManager.getPastMeetingList(DianaPrince).get(0) instanceof PastMeetingImpl);//checks a past meeting is returned
+		assertTrue(contactManager.getPastMeetingList(ArthurCurry).isEmpty());//checks an empty list is returned
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 10, 00), "test");
-		assertEquals(2, contactManager.getPastMeetingList(DianaPrince).size());
-		assertEquals("test",contactManager.getPastMeetingList(DianaPrince).get(0).getNotes());
-		//checks that first element time is before second element time.
-		assertTrue(contactManager.getPastMeetingList(DianaPrince).get(0).getDate().before(contactManager.getPastMeetingList(DianaPrince).get(1).getDate()));
+		List<PastMeeting> chronologicalTest = contactManager.getPastMeetingList(DianaPrince);
+		assertEquals(2, chronologicalTest.size());
+		assertEquals("test",chronologicalTest.get(0).getNotes());
+		//checks that first element time is before second element (chronology).
+		assertTrue(chronologicalTest.get(0).getDate().before(chronologicalTest.get(1).getDate()));
 	}
 
 	//getPastMeetingList
@@ -197,7 +202,8 @@ public class ContactManagerImplTest {
 	@Test
 	public void testAddNewPastMeeting() {
 		contactManager.addNewPastMeeting(contacts, new GregorianCalendar(2014, 00, 23, 12, 00), "No New Business");
-		assertEquals(1,contactManager.getMeeting(1).getId());
+		assertEquals(3,contactManager.getMeeting(3).getId());
+		assertEquals("No New Business", ((PastMeetingImpl)contactManager.getMeeting(3)).getNotes());
 	}
 	
 	//addNewPastMeeting()
@@ -244,6 +250,21 @@ public class ContactManagerImplTest {
 	public void testAddMeetingNotes() {
 		contactManager.addMeetingNotes(1, "new meeting Notes");
 		assertEquals("new meeting Notes", contactManager.getPastMeetingList(DianaPrince).get(0).getNotes());
+	}
+	
+	//addMeetingNotes()
+	@Test
+	public void convertFutureMeeting(){
+		GregorianCalendar date = (GregorianCalendar) Calendar.getInstance();
+		date.set(Calendar.SECOND, (date.get(Calendar.SECOND) + 1));//sets date 1 second in the future
+		contactManager.addFutureMeeting(contacts, date);
+		try {
+			Thread.sleep(2000);//sleeps for 2 seconds so the future meeting is in the past
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		contactManager.addMeetingNotes(3, "Future to past");
+		assertEquals("Future to past", contactManager.getPastMeetingList(DianaPrince).get(1).getNotes());
 	}
 	
 	//addMeetingNotes()
