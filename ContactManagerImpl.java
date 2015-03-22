@@ -261,7 +261,7 @@ public class ContactManagerImpl implements ContactManager {
 		checkIfArgumentsAreNull(name);
 		Set<Contact> returnSet = new HashSet<Contact>();
 		for (Contact contact: contactSet){
-			if (contact.getName().contains(name)){
+			if (contact.getName().toLowerCase().contains(name.toLowerCase())){//ignores case of name
 				returnSet.add(contact);
 			}
 		}
