@@ -297,7 +297,7 @@ public class ContactManagerImplTest {
 		assertTrue(contactManager.getContacts("Arthur Curry").contains(ArthurCurry));
 	}
 	
-	// addNewContac()
+	// addNewContact()
 	@Test
 	public void throwsExceptionWhenNameIsNull() {
 		thrown.expect(NullPointerException.class);
@@ -305,7 +305,7 @@ public class ContactManagerImplTest {
 		contactManager.addNewContact(null, "not null");
 	}
 	
-	// addNewContac()
+	// addNewContact()
 	@Test
 	public void throwsExceptionWhenNotesIsNull() {
 		thrown.expect(NullPointerException.class);
@@ -337,8 +337,11 @@ public class ContactManagerImplTest {
 	@Test
 	public void testGetContactsString() {
 		contactManager.addNewContact("Arthur Curry", "I AM AQUAMAN");
-		assertTrue(contactManager.getContacts("Arthur Curry").contains(ArthurCurry));
+		contactManager.addNewContact("Orm Curry", "I AM OCEAN MASTER");
+		assertTrue(contactManager.getContacts("curry").contains(ArthurCurry));//tests lower case
+		assertEquals(2, contactManager.getContacts("curry").size());//tests returns multiple contacts
 		assertEquals(1, contactManager.getContacts("Arthur Curry").size());
+		assertTrue(contactManager.getContacts("Empty list").isEmpty());//tests list empty if no contact exists with that string
 	}
 	
 	// getContacts()
